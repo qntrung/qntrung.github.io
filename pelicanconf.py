@@ -38,3 +38,5 @@ MARKUP = ('md', 'ipynb')
 
 PLUGIN_PATH = './plugins'
 PLUGINS = ['ipynb.markup']
+
+THEME='/home/tic/jupyter-blog/pelican-themes/bootstrap'
