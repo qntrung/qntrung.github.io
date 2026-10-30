@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+        <title>Lộ trình làm chủ Claude cho lập trình viên</title>
+        <meta charset="utf-8" />
+        <link href="https://qntrung.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="AI's blog Full Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="https://qntrung.github.io/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="https://qntrung.github.io/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="https://qntrung.github.io/theme/pygment.css" />
+
+        <script src="https://qntrung.github.io/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+        <style type="text/css">
+          .roadmap table { width: 100%; border-collapse: collapse; margin: 1em 0 2em; }
+          .roadmap th, .roadmap td { border: 1px solid #ddd; padding: 8px 10px; vertical-align: top; text-align: left; }
+          .roadmap th { background: #f4f4f4; }
+          .roadmap .session { border-left: 5px solid #3085d6; padding: 0 0 0 18px; margin: 2.5em 0; }
+          .roadmap .session h3 { margin-top: 0; }
+          .roadmap .meta { color: #777; font-size: 0.9em; margin-bottom: 1em; }
+          .roadmap .exercise { background: #fafafa; border: 1px solid #eee; border-radius: 4px; padding: 10px 14px; margin: 0.8em 0; }
+          .roadmap .exercise strong { color: #333; }
+          .roadmap .capstone { background: #fff8e6; border: 1px solid #f0c36d; border-radius: 4px; padding: 14px 18px; margin: 1.2em 0; }
+          .roadmap .capstone h4 { margin-top: 0; color: #b7791f; }
+          .roadmap .done { color: #2f855a; }
+          .roadmap code { background: #f1f1f1; padding: 1px 4px; border-radius: 3px; font-size: 0.92em; }
+          .roadmap pre { background: #f6f8fa; padding: 10px 12px; overflow-x: auto; border-radius: 4px; font-size: 0.9em; }
+          .roadmap ul, .roadmap ol { margin-left: 1.4em; }
+          .roadmap li { margin-bottom: 0.3em; }
+        </style>
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="https://qntrung.github.io/">AI's blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+
+              <ul class="columns">
+                <li><a href="https://qntrung.github.io/">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="https://qntrung.github.io/claude-learning-schedule.html" rel="bookmark"
+                   title="Permalink to Lộ trình làm chủ Claude cho lập trình viên">Lộ trình làm chủ Claude cho lập trình viên</a></h2>
+
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2026-10-30T10:00:00+07:00">
+                Fri 30 October 2026
+              </abbr>
+              <address class="vcard author">By
+                <a class="url fn" href="https://qntrung.github.io/author/trungquach.html"> TrungQuach</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content roadmap">
+
+<p>Lộ trình 8 session (khoảng <strong>4 tuần</strong>, mỗi tuần 2 session, mỗi session 3–4 giờ) dành cho lập trình viên <strong>chưa từng dùng Claude</strong>. Đi từ chat cơ bản, đến Claude Code, MCP, Claude API, rồi tới tự xây agent. Mỗi session gồm: mục tiêu, kiến thức cần nắm, bài tập thực hành, và một <strong>đề án lớn</strong> ở cuối để áp dụng mọi thứ vừa học.</p>
+
+<h3>Chuẩn bị trước khi bắt đầu</h3>
+<ul>
+  <li>Tài khoản <a href="https://claude.ai">claude.ai</a> (gói Pro/Max sẽ dùng được Claude Code; gói Free đủ cho Session 1–2).</li>
+  <li>Tài khoản <a href="https://console.anthropic.com">Claude Console</a> + một ít credit để gọi API (Session 6–8).</li>
+  <li>Node.js 18+, Python 3.10+, Git, một editor (VS Code hoặc JetBrains), tài khoản GitHub.</li>
+  <li>Một repo “sân chơi” riêng (ví dụ <code>claude-playground</code>) để làm bài tập. Đề án các session sau sẽ dùng lại kết quả của session trước.</li>
+</ul>
+
+<h3>Tổng quan lịch trình</h3>
+<table>
+  <tr><th>Session</th><th>Chủ đề</th><th>Kỹ năng chính</th><th>Đề án cuối session</th></tr>
+  <tr><td>1 (Tuần 1)</td><td>Làm quen claude.ai</td><td>Chat, upload file, Projects, Artifacts, chọn model</td><td>“Trợ lý dự án”: Project chứa tài liệu dự án thật + bộ prompt mẫu</td></tr>
+  <tr><td>2 (Tuần 1)</td><td>Prompt engineering cho dev</td><td>Cấu trúc prompt, XML tag, ví dụ mẫu, extended thinking, review/debug</td><td>Refactor một module legacy chỉ bằng chat</td></tr>
+  <tr><td>3 (Tuần 2)</td><td>Claude Code cơ bản</td><td>Cài đặt, CLAUDE.md, plan mode, quyền, git, rewind</td><td>Xây CLI app hoàn chỉnh có test từ con số 0</td></tr>
+  <tr><td>4 (Tuần 2)</td><td>Claude Code nâng cao</td><td>Slash command, skills, hooks, subagents, headless, GitHub Actions</td><td>Biến repo thành “AI-ready”: quy trình tự động hoá đầy đủ</td></tr>
+  <tr><td>5 (Tuần 3)</td><td>MCP (Model Context Protocol)</td><td>Dùng MCP server có sẵn, tự viết MCP server</td><td>MCP server cho hệ thống/DB của bạn</td></tr>
+  <tr><td>6 (Tuần 3)</td><td>Claude API</td><td>Messages API, streaming, tool use, structured output, caching, batch, vision</td><td>Chatbot hỏi đáp tài liệu (RAG) có tool use + web UI</td></tr>
+  <tr><td>7 (Tuần 4)</td><td>Xây dựng Agent</td><td>Agentic loop, Agent SDK, multi-agent, evals, guardrail</td><td>Agent tự động review Pull Request</td></tr>
+  <tr><td>8 (Tuần 4)</td><td>Đưa vào thực tế &amp; tổng kết</td><td>Bảo mật, chi phí, quan sát, tích hợp vào quy trình nhóm</td><td><strong>Đồ án tốt nghiệp</strong>: sản phẩm end-to-end</td></tr>
+</table>
+
+<!-- ============================ SESSION 1 ============================ -->
+<div class="session">
+<h3>Session 1 — Làm quen với claude.ai</h3>
+<div class="meta">Thời lượng: ~3 giờ · Công cụ: claude.ai (web/desktop/mobile)</div>
+
+<p><strong>Mục tiêu:</strong> dùng thành thạo giao diện chat, biết lúc nào dùng model nào, biết đưa ngữ cảnh (file, ảnh, tài liệu) vào cho Claude, và biết dùng Projects + Artifacts.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li>Các dòng model: <em>Opus</em> (mạnh nhất, cho việc khó), <em>Sonnet</em> (cân bằng, dùng hằng ngày), <em>Haiku</em> (nhanh, rẻ). Bật/tắt <em>extended thinking</em> cho bài toán cần suy luận.</li>
+  <li>Upload file: code, PDF, ảnh chụp màn hình lỗi, sơ đồ kiến trúc.</li>
+  <li><strong>Projects</strong>: gom tài liệu + “custom instructions” dùng chung cho nhiều cuộc hội thoại.</li>
+  <li><strong>Artifacts</strong>: Claude tạo trang HTML/React, sơ đồ, tài liệu… xem và chạy trực tiếp.</li>
+  <li>Web search, các connector (Google Drive, GitHub…), tính năng memory, sửa/chạy lại câu hỏi, rẽ nhánh hội thoại.</li>
+  <li>Giới hạn: context window, độ dài hội thoại, Claude có thể sai, luôn kiểm chứng.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 1.1 — Giải thích code lạ.</strong> Chọn một file khoảng 200–500 dòng trong dự án bạn đang làm (hoặc một file từ thư viện open-source). Upload và yêu cầu Claude: (a) tóm tắt file làm gì, (b) vẽ luồng gọi hàm bằng sơ đồ Mermaid, (c) chỉ ra 3 điểm có thể là bug. Tự kiểm chứng từng điểm.</div>
+<div class="exercise"><strong>Bài 1.2 — Debug từ ảnh chụp.</strong> Chụp màn hình một stack trace hoặc lỗi giao diện thật, gửi cho Claude kèm đoạn code liên quan. So sánh câu trả lời khi có và khi không có code đi kèm, rút ra: ngữ cảnh ảnh hưởng thế nào?</div>
+<div class="exercise"><strong>Bài 1.3 — So sánh model.</strong> Cùng một câu hỏi thiết kế (ví dụ: “thiết kế schema DB cho hệ thống đặt vé xem phim”) hỏi Haiku, Sonnet, Opus, và Opus có bật extended thinking. Ghi lại khác biệt về chất lượng, tốc độ.</div>
+<div class="exercise"><strong>Bài 1.4 — Artifact đầu tiên.</strong> Yêu cầu Claude tạo một Artifact: trang dashboard nhỏ hiển thị dữ liệu từ file CSV bạn upload (ví dụ log request, chi tiêu cá nhân). Yêu cầu chỉnh 3 lần (màu sắc, thêm bộ lọc, thêm biểu đồ) để làm quen việc lặp.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 1: “Trợ lý dự án” bằng Projects</h4>
+<p>Tạo một Project trên claude.ai cho dự án thật bạn đang làm (hoặc một repo open-source bạn quan tâm).</p>
+<ol>
+  <li>Upload: README, tài liệu kiến trúc, schema DB, coding convention, 3–5 file code quan trọng nhất.</li>
+  <li>Viết custom instructions cho Project: vai trò của Claude, ngôn ngữ trả lời, chuẩn code của nhóm, định dạng câu trả lời mong muốn.</li>
+  <li>Dùng Project để làm 3 việc thật: viết tài liệu onboarding cho thành viên mới, sinh test case cho một tính năng, viết mô tả cho một Pull Request.</li>
+  <li>Xây một file <code>prompts.md</code> gồm ít nhất 10 prompt mẫu bạn thấy hiệu quả (giải thích code, viết test, review, viết commit message…).</li>
+</ol>
+<p class="done"><strong>Hoàn thành khi:</strong> một đồng nghiệp đọc tài liệu onboarding do Claude viết mà không phát hiện sai sót lớn, và bạn có thư viện prompt cá nhân dùng lại được.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 2 ============================ -->
+<div class="session">
+<h3>Session 2 — Prompt engineering cho lập trình viên</h3>
+<div class="meta">Thời lượng: ~3 giờ · Công cụ: claude.ai</div>
+
+<p><strong>Mục tiêu:</strong> viết prompt cho ra kết quả ổn định, đúng ý ngay từ lần đầu; dùng Claude cho review, debug, thiết kế.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li>Prompt tốt = <strong>ngữ cảnh + nhiệm vụ rõ ràng + ràng buộc + định dạng đầu ra</strong>. Hãy viết như đang giao việc cho một đồng nghiệp giỏi nhưng mới vào dự án.</li>
+  <li>Dùng thẻ XML để tách phần: <code>&lt;code&gt;</code>, <code>&lt;requirements&gt;</code>, <code>&lt;example&gt;</code>.</li>
+  <li>Few-shot: đưa 1–3 ví dụ mẫu đầu vào/đầu ra.</li>
+  <li>Yêu cầu Claude suy nghĩ từng bước, hoặc bật extended thinking; yêu cầu nêu giả định và hỏi lại khi thiếu thông tin.</li>
+  <li>Chia nhỏ nhiệm vụ lớn (prompt chaining); cho Claude tự kiểm tra lại kết quả.</li>
+  <li>Biết khi nào nên bắt đầu hội thoại mới (context quá dài, hướng đi sai).</li>
+</ul>
+
+<div class="exercise"><strong>Bài 2.1 — Trước &amp; sau.</strong> Lấy prompt “viết hàm validate email”. Viết lại thành prompt đầy đủ: ngôn ngữ, phiên bản, chuẩn RFC áp dụng tới đâu, các case phải pass/fail, yêu cầu kèm unit test. So sánh 2 kết quả.</div>
+<div class="exercise"><strong>Bài 2.2 — Code review có cấu trúc.</strong> Viết một prompt review dùng XML tag, yêu cầu đầu ra là bảng: <em>mức độ (critical/major/minor) — dòng — vấn đề — đề xuất sửa</em>. Chạy trên một diff thật của bạn.</div>
+<div class="exercise"><strong>Bài 2.3 — Debug kiểu “rubber duck”.</strong> Chọn một bug từng mất nhiều thời gian. Mô tả triệu chứng (không nói nguyên nhân) và yêu cầu Claude đặt câu hỏi để thu hẹp vấn đề trước khi đưa giải pháp. Đánh giá: Claude có tìm ra đúng nguyên nhân không?</div>
+<div class="exercise"><strong>Bài 2.4 — Thiết kế hệ thống.</strong> Yêu cầu Claude đóng vai kiến trúc sư phản biện: bạn đưa ra thiết kế cho một tính năng (ví dụ hệ thống thông báo realtime), Claude chỉ ra điểm yếu, trade-off, và phương án thay thế. Xuất kết quả thành ADR (Architecture Decision Record).</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 2: Refactor module legacy chỉ bằng chat</h4>
+<p>Chọn một module “khó chịu” (code cũ, hàm dài, không test) khoảng 300–1000 dòng.</p>
+<ol>
+  <li>Dùng Claude viết <strong>characterization test</strong> (test ghi lại hành vi hiện tại) trước khi sửa gì.</li>
+  <li>Yêu cầu Claude đề xuất kế hoạch refactor theo từng bước nhỏ, mỗi bước giữ test xanh.</li>
+  <li>Thực hiện từng bước: copy code vào chat, nhận code mới, chạy test, phản hồi lỗi cho Claude.</li>
+  <li>Cuối cùng nhờ Claude viết tài liệu cho module mới + mô tả PR.</li>
+</ol>
+<p class="done"><strong>Hoàn thành khi:</strong> toàn bộ test cũ vẫn xanh, độ phức tạp giảm rõ rệt (hàm ngắn hơn, đặt tên rõ hơn), và bạn ghi lại được những prompt nào giúp nhiều nhất. Bạn sẽ thấy việc copy/paste qua lại rất mệt, đó chính là lý do của Session 3.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 3 ============================ -->
+<div class="session">
+<h3>Session 3 — Claude Code cơ bản</h3>
+<div class="meta">Thời lượng: ~4 giờ · Công cụ: Claude Code (terminal, extension VS Code/JetBrains, desktop, web)</div>
+
+<p><strong>Mục tiêu:</strong> để Claude làm việc trực tiếp trong codebase: đọc file, sửa code, chạy lệnh, chạy test, commit.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<pre>npm install -g @anthropic-ai/claude-code   # hoặc theo hướng dẫn cài đặt chính thức
+cd my-project
+claude                                       # mở phiên tương tác</pre>
+<ul>
+  <li><code>/init</code> tạo file <strong>CLAUDE.md</strong>: “bộ nhớ” của dự án (cách build, test, convention). Claude đọc file này mỗi phiên.</li>
+  <li>Tham chiếu file bằng <code>@duong/dan/file</code>; dán ảnh chụp màn hình vào terminal.</li>
+  <li><strong>Plan mode</strong> (Shift+Tab): Claude chỉ đọc và lập kế hoạch, chưa sửa gì. Dùng cho việc lớn.</li>
+  <li>Chế độ quyền: hỏi trước mỗi lần sửa, tự động chấp nhận chỉnh sửa, auto mode… Hiểu rủi ro của từng chế độ.</li>
+  <li>Esc để dừng, Esc Esc / <code>/rewind</code> để quay về checkpoint; <code>/clear</code> làm sạch context, <code>/compact</code> nén context.</li>
+  <li>Các lệnh hay dùng: <code>/help</code>, <code>/model</code>, <code>/cost</code> hoặc <code>/usage</code>, <code>/config</code>, <code>/memory</code>.</li>
+  <li>Quy trình chuẩn: <em>Khám phá → Lập kế hoạch → Code → Kiểm thử → Commit</em>. Cho Claude một cách tự kiểm tra (test, linter, chạy app) thì chất lượng tăng vọt.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 3.1 — Hỏi đáp codebase.</strong> Mở Claude Code trong một repo open-source vừa clone (ví dụ một framework web nhỏ). Hỏi: “Request đi qua những lớp nào từ lúc vào đến lúc trả response?”, “Muốn thêm middleware thì sửa ở đâu?”. Kiểm chứng bằng cách tự đọc code.</div>
+<div class="exercise"><strong>Bài 3.2 — CLAUDE.md.</strong> Chạy <code>/init</code> trên dự án của bạn, đọc kỹ file sinh ra, sửa lại cho đúng và bổ sung: lệnh test, quy ước đặt tên, những thứ <em>không được</em> làm. Thử một yêu cầu trước và sau khi sửa CLAUDE.md để thấy khác biệt.</div>
+<div class="exercise"><strong>Bài 3.3 — Sửa bug bằng TDD.</strong> Chọn một issue/bug thật. Yêu cầu Claude: viết test tái hiện lỗi trước (phải fail), rồi mới sửa code cho test pass, rồi chạy toàn bộ test suite.</div>
+<div class="exercise"><strong>Bài 3.4 — Plan mode + rewind.</strong> Dùng plan mode cho một tính năng vừa phải. Chỉnh kế hoạch ít nhất 2 lần trước khi duyệt. Sau đó cố ý để Claude đi sai hướng, dùng rewind quay lại và đưa chỉ dẫn tốt hơn.</div>
+<div class="exercise"><strong>Bài 3.5 — Git workflow.</strong> Nhờ Claude tạo branch, commit với message chuẩn Conventional Commits, giải quyết một merge conflict có chủ đích, và viết mô tả PR.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 3: CLI app hoàn chỉnh từ con số 0</h4>
+<p>Dùng Claude Code xây một công cụ dòng lệnh <strong>quản lý chi tiêu cá nhân</strong> (hoặc chủ đề tương đương bạn thích), ngôn ngữ tuỳ chọn.</p>
+<ul>
+  <li>Lệnh: <code>add</code>, <code>list</code> (lọc theo ngày/danh mục), <code>report</code> (tổng theo tháng), <code>import</code> từ CSV, <code>export</code> JSON.</li>
+  <li>Lưu trữ bằng SQLite, có migration.</li>
+  <li>Test coverage ≥ 80%, linter/formatter được cấu hình, README đầy đủ.</li>
+  <li>Bắt đầu bằng plan mode; CLAUDE.md được cập nhật dần trong quá trình làm.</li>
+  <li>Lịch sử git sạch: mỗi tính năng một commit/PR có ý nghĩa.</li>
+</ul>
+<p class="done"><strong>Hoàn thành khi:</strong> người khác clone repo, làm theo README là chạy được, test xanh. Ghi lại: bạn tự gõ bao nhiêu % code? Lúc nào Claude làm sai và bạn đã sửa hướng bằng cách nào?</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 4 ============================ -->
+<div class="session">
+<h3>Session 4 — Claude Code nâng cao: tuỳ biến &amp; tự động hoá</h3>
+<div class="meta">Thời lượng: ~4 giờ · Công cụ: Claude Code, GitHub</div>
+
+<p><strong>Mục tiêu:</strong> biến Claude Code thành công cụ riêng của nhóm bạn: lệnh tắt, quy trình chuẩn hoá, kiểm soát an toàn, chạy trong CI.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li><strong>Custom slash commands &amp; Skills</strong>: đóng gói quy trình lặp lại (thư mục <code>.claude/commands/</code>, <code>.claude/skills/&lt;tên&gt;/SKILL.md</code>).</li>
+  <li><strong>Hooks</strong>: chạy script tự động tại các thời điểm như trước/sau khi dùng tool (ví dụ tự format sau mỗi lần sửa file, chặn lệnh nguy hiểm). Cấu hình trong <code>.claude/settings.json</code>.</li>
+  <li><strong>Permissions</strong>: allow/deny cho từng lệnh trong <code>settings.json</code>; phân biệt settings của user, project, local.</li>
+  <li><strong>Subagents</strong> (<code>.claude/agents/</code>): agent chuyên biệt với context riêng (reviewer, test-writer, security auditor…).</li>
+  <li><strong>Headless mode</strong>: <code>claude -p "..."</code> để dùng trong script, pipe dữ liệu, xuất JSON.</li>
+  <li><strong>Git worktrees</strong>: chạy nhiều phiên Claude song song trên nhiều nhánh.</li>
+  <li><strong>Claude Code trên web/cloud</strong> và <strong>GitHub Actions</strong>: giao việc qua issue/PR với <code>@claude</code>, review PR tự động.</li>
+  <li>Các lệnh có sẵn hữu ích: <code>/review</code>, <code>/security-review</code>, plugins &amp; marketplace.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 4.1 — Slash command đầu tiên.</strong> Tạo lệnh <code>/fix-issue &lt;số issue&gt;</code>: đọc issue, tìm code liên quan, viết test, sửa, chạy test, commit. Dùng nó cho 2 issue thật.</div>
+<div class="exercise"><strong>Bài 4.2 — Hooks.</strong> Viết 2 hook: (a) sau mỗi lần Claude sửa file thì chạy formatter/linter; (b) chặn mọi lệnh có <code>rm -rf</code> hoặc ghi vào file <code>.env</code>. Kiểm tra hook bằng cách cố ý yêu cầu Claude làm việc bị chặn.</div>
+<div class="exercise"><strong>Bài 4.3 — Subagent reviewer.</strong> Tạo subagent <code>code-reviewer</code> chỉ có quyền đọc, có checklist theo chuẩn nhóm. Sau mỗi tính năng, yêu cầu Claude gọi subagent này review.</div>
+<div class="exercise"><strong>Bài 4.4 — Headless trong script.</strong> Viết script shell dùng <code>claude -p</code> để: đọc <code>git diff</code> của ngày hôm nay và sinh changelog dạng Markdown. Gắn vào git hook hoặc cron.</div>
+<div class="exercise"><strong>Bài 4.5 — Làm song song.</strong> Tạo 2 worktree, chạy 2 phiên Claude cùng lúc: một phiên làm tính năng, một phiên viết thêm test. Gộp kết quả lại.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 4: Repo “AI-ready”</h4>
+<p>Nâng cấp repo từ đề án Session 3 (hoặc repo thật của nhóm) thành một repo mà cả nhóm dùng Claude hiệu quả và an toàn:</p>
+<ol>
+  <li>CLAUDE.md hoàn chỉnh + <code>.claude/settings.json</code> với danh sách permission hợp lý (commit vào repo).</li>
+  <li>Ít nhất 3 slash command/skill: <code>/fix-issue</code>, <code>/new-feature</code> (plan → code → test → PR), <code>/release</code> (cập nhật version, changelog, tag).</li>
+  <li>Hooks: format tự động, chặn thao tác nguy hiểm, chạy test liên quan khi Claude kết thúc lượt.</li>
+  <li>2 subagent: <code>code-reviewer</code> và <code>test-writer</code>.</li>
+  <li>GitHub Action dùng Claude: tự review mỗi PR và phản hồi khi được nhắc <code>@claude</code> trong issue.</li>
+  <li>Tài liệu <code>docs/ai-workflow.md</code> hướng dẫn đồng nghiệp dùng các công cụ trên.</li>
+</ol>
+<p class="done"><strong>Hoàn thành khi:</strong> tạo một issue mới, gõ <code>@claude</code>, nhận được PR kèm test và được review tự động, còn bạn chỉ cần đọc và merge.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 5 ============================ -->
+<div class="session">
+<h3>Session 5 — MCP: kết nối Claude với thế giới bên ngoài</h3>
+<div class="meta">Thời lượng: ~4 giờ · Công cụ: Claude Code, Claude Desktop, MCP SDK (Python hoặc TypeScript)</div>
+
+<p><strong>Mục tiêu:</strong> hiểu Model Context Protocol, dùng MCP server có sẵn, và tự viết server cho hệ thống của mình.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li>MCP là chuẩn mở để Claude dùng <strong>tools</strong> (hành động), <strong>resources</strong> (dữ liệu) và <strong>prompts</strong> (mẫu) từ server bên ngoài.</li>
+  <li>Transport: <code>stdio</code> (chạy local) và HTTP (server từ xa, có xác thực OAuth).</li>
+  <li>Thêm server vào Claude Code: <code>claude mcp add &lt;tên&gt; -- &lt;lệnh&gt;</code>, xem bằng <code>/mcp</code>; scope project (file <code>.mcp.json</code>) và scope user.</li>
+  <li>Connectors trên claude.ai / Claude Desktop.</li>
+  <li>Bảo mật: chỉ dùng server tin cậy, cấp quyền tối thiểu, cẩn thận <em>prompt injection</em> từ dữ liệu bên ngoài.</li>
+  <li>Công cụ debug: MCP Inspector.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 5.1 — Dùng server có sẵn.</strong> Gắn 3 MCP server vào Claude Code: GitHub, một server database (Postgres/SQLite), và Playwright (điều khiển trình duyệt). Yêu cầu Claude: “Tìm 5 issue mở lâu nhất, đọc code liên quan, đề xuất cách sửa”.</div>
+<div class="exercise"><strong>Bài 5.2 — Kiểm thử giao diện bằng trình duyệt.</strong> Với Playwright MCP, yêu cầu Claude mở web app của bạn, thực hiện luồng đăng ký/đăng nhập, chụp màn hình, báo lỗi giao diện, rồi tự sửa code.</div>
+<div class="exercise"><strong>Bài 5.3 — Hello MCP.</strong> Viết MCP server tối giản (ví dụ Python dùng <code>FastMCP</code>) với 1 tool <code>get_weather(city)</code> trả dữ liệu giả. Test bằng MCP Inspector, rồi gắn vào Claude Code.</div>
+<div class="exercise"><strong>Bài 5.4 — Resources &amp; prompts.</strong> Mở rộng server: thêm resource trả về nội dung file cấu hình, và một prompt mẫu “phân tích log”.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 5: MCP server cho hệ thống của bạn</h4>
+<p>Xây MCP server cho một hệ thống thực tế, ví dụ DB của CLI chi tiêu (Session 3), hệ thống ticket nội bộ, hoặc API công ty.</p>
+<ul>
+  <li>Ít nhất 5 tool, trong đó có tool chỉ đọc và tool ghi (tool ghi phải có xác nhận/kiểm tra đầu vào chặt chẽ).</li>
+  <li>Ít nhất 2 resource và 1 prompt.</li>
+  <li>Xử lý lỗi rõ ràng, mô tả tool viết tốt để Claude biết khi nào dùng tool nào.</li>
+  <li>Hỗ trợ cả <code>stdio</code> và HTTP; có test tự động cho các tool.</li>
+  <li>Đóng gói để đồng nghiệp cài được bằng một lệnh; khai báo trong <code>.mcp.json</code> của repo.</li>
+</ul>
+<p class="done"><strong>Hoàn thành khi:</strong> từ Claude Desktop hoặc Claude Code, bạn hỏi bằng ngôn ngữ tự nhiên (“Tháng này tôi tiêu cho ăn uống nhiều hơn tháng trước bao nhiêu? Thêm khoản 50k cà phê hôm nay”) và Claude tự gọi đúng tool để trả lời và cập nhật dữ liệu.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 6 ============================ -->
+<div class="session">
+<h3>Session 6 — Lập trình với Claude API</h3>
+<div class="meta">Thời lượng: ~4 giờ · Công cụ: Anthropic SDK (Python/TypeScript), Claude Console</div>
+
+<p><strong>Mục tiêu:</strong> tích hợp Claude vào sản phẩm của bạn qua API.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<pre>pip install anthropic          # hoặc: npm install @anthropic-ai/sdk
+export ANTHROPIC_API_KEY=...
+
+from anthropic import Anthropic
+client = Anthropic()
+msg = client.messages.create(
+    model="claude-sonnet-5-5",
+    max_tokens=1024,
+    system="Bạn là trợ lý kỹ thuật, trả lời ngắn gọn bằng tiếng Việt.",
+    messages=[{"role": "user", "content": "Giải thích CAP theorem"}],
+)
+print(msg.content[0].text)</pre>
+<ul>
+  <li>Messages API: <code>system</code>, <code>messages</code> (hội thoại nhiều lượt do bạn tự lưu), <code>max_tokens</code>, <code>temperature</code>, <code>stop_reason</code>.</li>
+  <li><strong>Streaming</strong> để hiển thị câu trả lời dần dần.</li>
+  <li><strong>Tool use</strong> (function calling): khai báo tool bằng JSON Schema, xử lý <code>tool_use</code> → trả <code>tool_result</code>.</li>
+  <li><strong>Structured output</strong>: ép đầu ra đúng schema JSON.</li>
+  <li><strong>Vision &amp; PDF</strong>: gửi ảnh, tài liệu.</li>
+  <li><strong>Prompt caching</strong> (giảm chi phí và độ trễ cho phần prompt lặp lại), <strong>Message Batches</strong> (xử lý hàng loạt, rẻ hơn), đếm token.</li>
+  <li>Xử lý lỗi: rate limit, retry, timeout; theo dõi chi phí trên Console. Không bao giờ commit API key.</li>
+  <li>Workbench trong Console để thử prompt trước khi code.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 6.1 — CLI chat.</strong> Viết chương trình chat trong terminal có streaming, lưu lịch sử hội thoại, lệnh <code>/reset</code>, in số token và chi phí ước tính sau mỗi lượt.</div>
+<div class="exercise"><strong>Bài 6.2 — Trích xuất dữ liệu có cấu trúc.</strong> Đưa vào 20 email/hoá đơn (ảnh hoặc PDF), trích xuất thành JSON theo schema (người gửi, số tiền, ngày, hạng mục). Viết script kiểm tra độ chính xác so với đáp án tự gán nhãn.</div>
+<div class="exercise"><strong>Bài 6.3 — Tool use.</strong> Cho Claude 3 tool: <code>get_exchange_rate</code>, <code>calculator</code>, <code>search_products</code> (dữ liệu giả). Tự viết vòng lặp xử lý tool call cho câu hỏi “Laptop rẻ nhất dưới 1000 USD là bao nhiêu tiền Việt?”.</div>
+<div class="exercise"><strong>Bài 6.4 — Tối ưu chi phí.</strong> Với một system prompt dài (~10k token), đo chi phí và độ trễ khi gọi 10 lần có và không có prompt caching. Sau đó chạy 100 yêu cầu bằng Batches API và so sánh giá.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 6: Chatbot hỏi đáp tài liệu nội bộ (RAG)</h4>
+<p>Xây ứng dụng web cho phép hỏi đáp trên bộ tài liệu của bạn (tài liệu dự án, wiki công ty, hoặc tài liệu của một thư viện open-source).</p>
+<ul>
+  <li>Pipeline nạp dữ liệu: chia nhỏ tài liệu, tạo embedding, lưu vào vector DB (pgvector, Chroma… tuỳ chọn); kết hợp tìm theo từ khoá.</li>
+  <li>Trả lời có <strong>trích dẫn nguồn</strong>; nói “không biết” khi tài liệu không có thông tin.</li>
+  <li>Tool use: Claude được phép gọi thêm tool <code>search_docs</code> nhiều lần, và một tool nghiệp vụ (ví dụ tạo ticket khi không trả lời được).</li>
+  <li>Web UI có streaming (FastAPI/Express + frontend tuỳ ý; có thể dùng chính Claude Code để xây).</li>
+  <li>Prompt caching cho system prompt; log token và chi phí cho mỗi câu hỏi.</li>
+  <li>Bộ 30 câu hỏi kiểm thử kèm đáp án mong đợi, script chấm điểm tự động.</li>
+</ul>
+<p class="done"><strong>Hoàn thành khi:</strong> ≥ 85% câu hỏi kiểm thử trả lời đúng và có trích dẫn, chi phí trung bình mỗi câu hỏi được đo và ghi trong README.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 7 ============================ -->
+<div class="session">
+<h3>Session 7 — Xây dựng Agent</h3>
+<div class="meta">Thời lượng: ~4 giờ · Công cụ: Claude API, Claude Agent SDK</div>
+
+<p><strong>Mục tiêu:</strong> hiểu agent hoạt động thế nào và tự xây agent đáng tin cậy cho công việc thực tế.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li><strong>Agentic loop</strong>: model → gọi tool → nhận kết quả → lặp lại cho đến khi xong. Phân biệt <em>workflow</em> (luồng cố định do code điều khiển) và <em>agent</em> (model tự quyết bước tiếp theo); chỉ dùng agent khi thật sự cần.</li>
+  <li>Các mẫu thiết kế: prompt chaining, routing, chạy song song, orchestrator–workers, evaluator–optimizer.</li>
+  <li><strong>Claude Agent SDK</strong>: dùng lại “bộ máy” của Claude Code (công cụ đọc/sửa file, chạy lệnh, quản lý context, subagent, MCP) trong chương trình của bạn.</li>
+  <li>Quản lý context cho tác vụ dài: tóm tắt, ghi chú ra file, subagent.</li>
+  <li><strong>Evals</strong>: bộ test cho agent, chấm bằng code hoặc dùng LLM làm giám khảo.</li>
+  <li><strong>Guardrails</strong>: giới hạn số bước và chi phí, sandbox, cần người duyệt cho hành động nguy hiểm, chống prompt injection.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 7.1 — Agent từ con số 0.</strong> Không dùng framework, tự viết agent ~100 dòng có 3 tool: <code>read_file</code>, <code>list_dir</code>, <code>run_tests</code>. Giao nhiệm vụ “tìm vì sao test X fail”. Ghi log mọi bước để hiểu vòng lặp.</div>
+<div class="exercise"><strong>Bài 7.2 — Agent SDK.</strong> Viết lại bài 7.1 bằng Claude Agent SDK, thêm MCP server từ Session 5. So sánh lượng code và khả năng.</div>
+<div class="exercise"><strong>Bài 7.3 — Multi-agent.</strong> Xây agent nghiên cứu: một orchestrator chia câu hỏi (ví dụ “so sánh 3 thư viện ORM cho Node.js”) thành các phần, giao cho subagent tìm hiểu song song, rồi tổng hợp thành báo cáo.</div>
+<div class="exercise"><strong>Bài 7.4 — Evals.</strong> Viết 15 test case cho agent bài 7.2, chấm điểm tự động. Thay đổi system prompt và đo xem điểm tăng hay giảm.</div>
+
+<div class="capstone">
+<h4>🎯 Đề án Session 7: Agent tự động review Pull Request</h4>
+<p>Xây agent nhận đường dẫn một PR trên GitHub và tạo bản review chất lượng như một senior.</p>
+<ul>
+  <li>Đọc diff, mở các file liên quan để hiểu ngữ cảnh (không chỉ nhìn diff).</li>
+  <li>Chạy test và linter trong sandbox (Docker), đưa kết quả vào nhận xét.</li>
+  <li>Dùng subagent chuyên biệt: correctness, security, performance; orchestrator gộp và loại bỏ nhận xét trùng lặp hoặc kém tin cậy.</li>
+  <li>Đăng nhận xét inline lên PR qua GitHub API (có chế độ <code>--dry-run</code>).</li>
+  <li>Giới hạn chi phí và số bước cho mỗi lần chạy; log đầy đủ để debug.</li>
+  <li>Bộ eval: 10 PR có bug được cài sẵn, đo tỉ lệ phát hiện và tỉ lệ báo sai.</li>
+</ul>
+<p class="done"><strong>Hoàn thành khi:</strong> agent phát hiện ≥ 7/10 bug cài sẵn, tỉ lệ nhận xét vô ích thấp, và chạy được trong GitHub Actions trên repo của bạn.</p>
+</div>
+</div>
+
+<!-- ============================ SESSION 8 ============================ -->
+<div class="session">
+<h3>Session 8 — Đưa vào thực tế &amp; tổng kết</h3>
+<div class="meta">Thời lượng: ~4 giờ + thời gian làm đồ án (1–2 tuần)</div>
+
+<p><strong>Mục tiêu:</strong> dùng Claude an toàn, tiết kiệm, đo được hiệu quả; tích hợp vào công việc hằng ngày của bạn và nhóm.</p>
+
+<p><strong>Kiến thức cần nắm:</strong></p>
+<ul>
+  <li><strong>Bảo mật</strong>: không đưa secret vào prompt, phòng prompt injection (dữ liệu từ web, email, issue là dữ liệu chứ không phải mệnh lệnh), nguyên tắc quyền tối thiểu cho tool, luôn review code AI sinh ra.</li>
+  <li><strong>Chi phí</strong>: chọn model phù hợp từng bước (Haiku cho phân loại, Sonnet cho việc chính, Opus cho việc khó), caching, batch, giới hạn <code>max_tokens</code>.</li>
+  <li><strong>Quan sát</strong>: log prompt/response, token, độ trễ, tỉ lệ lỗi; chạy eval định kỳ khi đổi prompt hoặc đổi model.</li>
+  <li><strong>Hệ sinh thái</strong>: Claude trên desktop/mobile, Claude in Chrome, Claude trong Slack, tác vụ định kỳ (scheduled tasks), Claude Code trên web chạy trong cloud.</li>
+  <li><strong>Làm việc nhóm</strong>: chia sẻ CLAUDE.md, skills, plugins, MCP config; quy ước review code do AI viết.</li>
+</ul>
+
+<div class="exercise"><strong>Bài 8.1 — Tấn công thử.</strong> Thử tấn công prompt injection vào chatbot Session 6 (ví dụ chèn chỉ thị độc vào tài liệu) và agent Session 7 (chèn chỉ thị vào mô tả PR). Ghi lại lỗ hổng và cách khắc phục.</div>
+<div class="exercise"><strong>Bài 8.2 — Tối ưu chi phí.</strong> Lấy chatbot Session 6, giảm chi phí mỗi câu hỏi ít nhất 40% mà điểm eval không giảm quá 3% (đổi model cho từng bước, caching, rút gọn context).</div>
+<div class="exercise"><strong>Bài 8.3 — Thói quen hằng ngày.</strong> Trong 1 tuần, ghi nhật ký: việc gì bạn giao cho Claude, mất bao lâu, kết quả thế nào. Cuối tuần tổng kết việc nào Claude làm tốt, việc nào nên tự làm.</div>
+
+<div class="capstone">
+<h4>🏆 Đồ án tốt nghiệp: Sản phẩm end-to-end có Claude làm lõi</h4>
+<p>Chọn <strong>một</strong> đề tài (hoặc tự đề xuất) giải quyết vấn đề thật của bạn hoặc công ty:</p>
+<ul>
+  <li><strong>A. Trợ lý on-call:</strong> nhận cảnh báo (webhook), đọc log/metrics qua MCP, phân tích nguyên nhân gốc, đề xuất hoặc tạo PR sửa lỗi, báo cáo vào Slack.</li>
+  <li><strong>B. Nền tảng tự động hoá tài liệu:</strong> theo dõi repo, tự cập nhật tài liệu API/kiến trúc khi code thay đổi, mở PR tài liệu, có hệ thống hỏi đáp trên tài liệu đó.</li>
+  <li><strong>C. Công cụ migration:</strong> agent chuyển codebase từ công nghệ cũ sang mới (ví dụ JavaScript → TypeScript, Python 2 → 3, REST → GraphQL) theo từng module, có test chứng minh hành vi không đổi.</li>
+  <li><strong>D. SaaS mini:</strong> ứng dụng có người dùng thật (ví dụ chấm bài code cho sinh viên, tóm tắt hợp đồng, sinh test case từ đặc tả).</li>
+</ul>
+<p><strong>Yêu cầu bắt buộc</strong> (áp dụng toàn bộ những gì đã học):</p>
+<ol>
+  <li>Toàn bộ dự án được phát triển bằng Claude Code với repo “AI-ready” (CLAUDE.md, skills, hooks, subagents, CI có Claude review).</li>
+  <li>Dùng Claude API hoặc Agent SDK làm lõi xử lý, có tool use.</li>
+  <li>Có ít nhất một MCP server tự viết.</li>
+  <li>Có bộ eval tự động chạy trong CI.</li>
+  <li>Có guardrails: giới hạn chi phí, xác nhận hành động nguy hiểm, phòng prompt injection.</li>
+  <li>Có dashboard hoặc log theo dõi token, chi phí, độ trễ.</li>
+  <li>Tài liệu: README, sơ đồ kiến trúc, báo cáo chi phí, bài viết tổng kết bài học (có thể đăng lên chính blog này).</li>
+</ol>
+<p class="done"><strong>Hoàn thành khi:</strong> sản phẩm được deploy, có ít nhất một người khác dùng thật, và bạn trình bày demo 10 phút giải thích kiến trúc, quyết định thiết kế, chi phí, cũng như những gì Claude làm tốt và chưa tốt.</p>
+</div>
+</div>
+
+<h3>Mẹo xuyên suốt lộ trình</h3>
+<ul>
+  <li><strong>Luôn kiểm chứng.</strong> Claude rất giỏi nhưng vẫn có thể sai. Hãy dựa vào test, linter, và chạy code thật.</li>
+  <li><strong>Ngữ cảnh là tất cả.</strong> Phần lớn câu trả lời kém đến từ thiếu ngữ cảnh, không phải do model yếu.</li>
+  <li><strong>Cho Claude cách tự kiểm tra</strong> (test, ảnh chụp mong muốn, lệnh build): chất lượng tăng rõ rệt.</li>
+  <li><strong>Lặp nhanh, sửa hướng sớm.</strong> Thấy đi sai thì dừng (Esc), rewind, đưa chỉ dẫn rõ hơn.</li>
+  <li><strong>Hỏi Claude về chính Claude:</strong> trong Claude Code, cứ hỏi “làm sao để cấu hình hook…”, Claude sẽ tra tài liệu và hướng dẫn.</li>
+  <li><strong>Ghi chép:</strong> sau mỗi session viết vài dòng “học được gì / prompt nào hiệu quả” vào blog này.</li>
+</ul>
+
+<h3>Tài liệu tham khảo</h3>
+<ul>
+  <li>Tài liệu Claude Code: <a href="https://code.claude.com/docs">code.claude.com/docs</a></li>
+  <li>Tài liệu Claude API, Prompt engineering, Agent SDK: <a href="https://docs.claude.com">docs.claude.com</a></li>
+  <li>Model Context Protocol: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a></li>
+  <li>Khoá học miễn phí của Anthropic: <a href="https://www.anthropic.com/learn">anthropic.com/learn</a></li>
+  <li>Ví dụ mã nguồn: <a href="https://github.com/anthropics/anthropic-cookbook">github.com/anthropics/anthropic-cookbook</a></li>
+</ul>
+
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+  <h4>Pages</h4>
+
+  <ul>
+
+
+
+
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="#">You can add links in your config file</a></li>
+    <li><a href="#">Another social link</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="https://qntrung.github.io/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="https://qntrung.github.io/theme/js/libs/gumby.min.js"></script>
+  <script src="https://qntrung.github.io/theme/js/plugins.js"></script>
+</body>
+</html>
