@@ -25,6 +25,7 @@
           .roadmap .step { border-left: 3px solid #cfe0f5; padding: 0 0 0 16px; margin: 1.8em 0; }
           .roadmap .step h4 { margin: 0 0 0.5em; }
           .roadmap .num { display: inline-block; background: #3085d6; color: #fff; border-radius: 3px; padding: 0 8px; font-size: 0.8em; margin-right: 6px; }
+          .roadmap .order, .roadmap .note { background: #eef4fb; border-left: 4px solid #3085d6; border-radius: 4px; padding: 10px 14px; }
           .roadmap .tryit { background: #eef7ee; border-radius: 4px; padding: 8px 12px; }
           .roadmap .exercise { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 4px; padding: 12px 16px; margin: 1em 0; }
           .roadmap .exercise h5 { margin: 0 0 0.5em; font-size: 1.05em; }
@@ -89,6 +90,7 @@
             <div class="entry-content roadmap">
 
 <p>Lộ trình <strong>6 session</strong> (khoảng <strong>3 tuần</strong>, mỗi tuần 2 session, mỗi session 3–4 giờ) dành cho lập trình viên đã quen trò chuyện với Claude trên claude.ai và muốn đi sâu vào phần dành cho dev: <strong>Claude Code, MCP, Claude API và Agent</strong>.</p>
+<p>Toàn bộ lộ trình thực hành <strong>trên máy của bạn, trong VS Code</strong> (extension Claude Code) theo kiểu <strong>local-first</strong>: Claude sửa code ngay trong thư mục local, bạn duyệt diff, chạy test và commit ở local; chỉ <strong>push lên GitHub khi xong một mốc</strong>. Nhờ vậy lịch sử trên GitHub gọn gàng, không có hàng chục commit lặt vặt.</p>
 <p>Mỗi session được chia thành:</p>
 <ul>
   <li><strong>Các Step bài học:</strong> giải thích ngắn, ví dụ mẫu chép và chạy được, kèm một việc nhỏ để “thử ngay”.</li>
@@ -101,15 +103,16 @@
 <ul>
   <li>Gói Claude Pro hoặc Max (để dùng Claude Code), hoặc API key trên <a href="https://console.anthropic.com">Claude Console</a>.</li>
   <li>Một API key cùng ít credit cho Session 4–6. Đặt hạn mức chi tiêu (spend limit) trong Console ngay từ đầu.</li>
-  <li>Python 3.12+ với <a href="https://docs.astral.sh/uv/">uv</a>, Node.js 18+, Git, GitHub CLI (<code>gh</code>), Docker (cho Session 5), cùng VS Code hoặc JetBrains.</li>
-  <li>Một repo GitHub trống tên <code>expense-cli</code>.</li>
+  <li><strong>VS Code</strong> bản mới, cài extension <strong>Claude Code</strong> (Anthropic) và extension <strong>Python</strong>.</li>
+  <li>Python 3.12+ với <a href="https://docs.astral.sh/uv/">uv</a>, Node.js 18+, Git, GitHub CLI (<code>gh</code>, đã chạy <code>gh auth login</code>), Docker (cho Session 5).</li>
+  <li>Tài khoản GitHub. Repo <code>expense-cli</code> trên GitHub chỉ cần tạo khi push lần đầu (cuối mốc M2), mọi thứ trước đó nằm ở local.</li>
 </ul>
 
 <h3>Tổng quan</h3>
 <table>
   <tr><th>Session</th><th>Chủ đề</th><th>Các step</th><th>Đề án</th></tr>
-  <tr><td><a href="#s1">1</a> · Tuần 1</td><td>Claude Code cơ bản</td><td>Cài đặt · Cách Claude Code làm việc · CLAUDE.md · Explore→Plan→Code→Commit · Quyền · Context · Git</td><td>Xây <code>expense-cli</code> từ con số 0</td></tr>
-  <tr><td><a href="#s2">2</a> · Tuần 1</td><td>Claude Code nâng cao</td><td>settings.json · Slash command · Skills · Hooks · Subagents · Headless · Worktree · GitHub Actions · Plugins</td><td>Repo “AI-ready”</td></tr>
+  <tr><td><a href="#s1">1</a> · Tuần 1</td><td>Claude Code cơ bản</td><td>Cài đặt trong VS Code · Cách Claude Code làm việc · CLAUDE.md · Explore→Plan→Code→Commit · Quyền · Context · Git local-first</td><td>Xây <code>expense-cli</code> từ con số 0</td></tr>
+  <tr><td><a href="#s2">2</a> · Tuần 1</td><td>Claude Code nâng cao</td><td>settings.json · Slash command · Skills · Hooks · Subagents · Headless · Worktree · Review trước khi push · GitHub Actions · Plugins</td><td>Repo “AI-ready”</td></tr>
   <tr><td><a href="#s3">3</a> · Tuần 2</td><td>MCP</td><td>Khái niệm · Gắn server · Dùng thực tế · Viết server · Kiểm thử · HTTP · Bảo mật</td><td>MCP server cho <code>expense-cli</code></td></tr>
   <tr><td><a href="#s4">4</a> · Tuần 2</td><td>Claude API</td><td>Request đầu tiên · Hội thoại · Streaming · Ảnh/PDF · Tool use · Structured output · Caching · Batch · Lỗi &amp; chi phí</td><td>Chatbot hỏi đáp tài liệu (RAG)</td></tr>
   <tr><td><a href="#s5">5</a> · Tuần 3</td><td>Xây dựng Agent</td><td>Workflow hay agent · Agent tự viết · Các mẫu thiết kế · Agent SDK · Tool &amp; MCP · Subagent · Evals · Guardrails</td><td>Agent review Pull Request</td></tr>
@@ -119,11 +122,18 @@
 
 <div class="session" id="s1">
 <h3>Session 1: Claude Code cơ bản</h3>
-<div class="meta">Tuần 1 · ~4 giờ học + 3–5 giờ đề án · Công cụ: Claude Code, Git, GitHub</div>
-<p><strong>Mục tiêu:</strong> để Claude làm việc trực tiếp trong codebase của bạn (đọc file, sửa code, chạy lệnh, chạy test, commit) và biết cách điều khiển nó.</p>
-<p><strong>Đầu ra:</strong> Claude Code chạy được trên máy, một file CLAUDE.md tốt, và ứng dụng <code>expense-cli</code> hoàn chỉnh có test.</p><div class="step"><h4><span class="num">Step 1</span> Cài đặt và đăng nhập</h4>
+<div class="meta">Tuần 1 · ~4 giờ học + 3–5 giờ đề án · Công cụ: VS Code + Claude Code, Git, GitHub</div>
+<p><strong>Mục tiêu:</strong> để Claude làm việc trực tiếp trong codebase trên máy bạn, ngay trong VS Code (đọc file, sửa code, chạy lệnh, chạy test, commit local), và biết cách điều khiển nó.</p>
+<p><strong>Đầu ra:</strong> Claude Code chạy được trên máy, một file CLAUDE.md tốt, và ứng dụng <code>expense-cli</code> hoàn chỉnh có test.</p><div class="order"><strong>Thứ tự học Session 1:</strong> Step 1–3 → làm mốc <strong>M0–M2</strong> của đề án (tạo expense-cli và lệnh <code>add</code>) → Step 4–7 (các ví dụ dùng chính lệnh <code>add</code> vừa làm) → làm tiếp <strong>M3–M6</strong> và các bài tập.</div><div class="step"><h4><span class="num">Step 1</span> Cài đặt Claude Code trong VS Code</h4>
 
-<p>Claude Code là một agent chạy trong terminal. Ngoài terminal, bạn cũng có thể dùng nó qua extension VS Code/JetBrains, app desktop, hoặc trên web tại claude.ai/code. Trong lộ trình này ta dùng bản terminal.</p>
+<p>Ta dùng <strong>extension Claude Code cho VS Code</strong>. Claude chạy trong một panel bên cạnh code, đề xuất thay đổi dưới dạng diff để bạn duyệt, và làm việc trực tiếp trên thư mục trên máy bạn. Không có gì được đẩy lên GitHub cho tới khi bạn chủ động push.</p>
+<ol>
+  <li>Mở VS Code → Extensions (<code>Ctrl+Shift+X</code>, Mac: <code>Cmd+Shift+X</code>) → tìm <strong>“Claude Code”</strong> (nhà phát hành Anthropic) → Install.</li>
+  <li>Mở thư mục dự án: File → Open Folder (hoặc gõ <code>code .</code> trong terminal).</li>
+  <li>Mở panel Claude: bấm biểu tượng Claude ở góc trên bên phải editor, hoặc mở Command Palette (<code>Ctrl+Shift+P</code>) và gõ “Claude Code”.</li>
+  <li>Lần đầu, đăng nhập bằng tài khoản claude.ai (Pro/Max) hoặc Claude Console (trả theo API).</li>
+</ol>
+<p>Nên cài thêm <strong>bản dòng lệnh (CLI)</strong> để dùng trong terminal tích hợp của VS Code (<code>Ctrl+`</code>). Một số việc ở các session sau làm bằng CLI, ví dụ <code>claude mcp add</code> hay <code>claude -p</code>. Extension và CLI dùng chung cấu hình (<code>.claude/</code>, CLAUDE.md).</p>
 <pre><span class="lang">bash</span><code># macOS / Linux / WSL
 curl -fsSL https://claude.ai/install.sh | bash
 
@@ -135,23 +145,22 @@ npm install -g @anthropic-ai/claude-code
 
 claude --version      # kiểm tra phiên bản
 claude doctor         # chẩn đoán lỗi cài đặt</code></pre>
-
-<p>Lần đầu chạy <code>claude</code>, trình duyệt sẽ mở để đăng nhập bằng tài khoản claude.ai (Pro/Max) hoặc Claude Console (trả theo API).</p>
-<p class="tryit"><strong>▶ Thử ngay:</strong> <code>cd</code> vào một dự án bất kỳ, gõ <code>claude</code>, rồi hỏi: <em>“Thư mục này là dự án gì? Tóm tắt trong 5 dòng, kèm cách chạy nó.”</em></p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Mở một dự án bất kỳ trong VS Code, mở panel Claude và hỏi: <em>“Thư mục này là dự án gì? Tóm tắt trong 5 dòng, kèm cách chạy nó.”</em></p>
 
 </div>
 <div class="step"><h4><span class="num">Step 2</span> Hiểu cách Claude Code làm việc</h4>
 
-<p>Claude Code chạy theo một <strong>vòng lặp agent</strong>: đọc yêu cầu → suy nghĩ → dùng công cụ (Read, Grep, Edit, Bash…) → xem kết quả → lặp lại cho tới khi xong. Trước mỗi lần sửa file hoặc chạy lệnh, nó sẽ hỏi bạn (tuỳ chế độ quyền, xem Step 5).</p>
+<p>Claude Code chạy theo một <strong>vòng lặp agent</strong>: đọc yêu cầu → suy nghĩ → dùng công cụ (Read, Grep, Edit, Bash…) → xem kết quả → lặp lại cho tới khi xong. Trước mỗi lần sửa file hoặc chạy lệnh, nó sẽ hỏi bạn (tuỳ chế độ quyền, xem Step 5). Trong VS Code, mỗi thay đổi được hiển thị bằng giao diện diff quen thuộc để bạn chấp nhận hoặc từ chối.</p>
 <table>
-  <tr><th>Thao tác</th><th>Tác dụng</th></tr>
-  <tr><td><code>@src/app.py</code></td><td>Đưa file hoặc thư mục vào ngữ cảnh</td></tr>
-  <tr><td>Dán ảnh (Ctrl+V)</td><td>Gửi ảnh chụp lỗi, mockup giao diện</td></tr>
-  <tr><td><code>!git status</code></td><td>Chạy lệnh shell ngay, kết quả được đưa vào hội thoại</td></tr>
-  <tr><td><code>/</code></td><td>Xem danh sách lệnh (slash command)</td></tr>
-  <tr><td>Esc</td><td>Dừng Claude giữa chừng để sửa hướng</td></tr>
-  <tr><td>Esc Esc</td><td>Mở menu rewind (quay lại thời điểm trước)</td></tr>
-  <tr><td>Shift+Tab</td><td>Đổi chế độ: bình thường → tự chấp nhận sửa file → plan mode</td></tr>
+  <tr><th>Việc cần làm</th><th>Trong panel VS Code</th><th>Trong CLI (terminal)</th></tr>
+  <tr><td>Đưa file vào ngữ cảnh</td><td>Gõ <code>@</code> trong ô chat rồi chọn file</td><td><code>@src/app.py</code></td></tr>
+  <tr><td>Hỏi về một đoạn code</td><td>Bôi đen đoạn code trong editor rồi hỏi, Claude thấy đoạn đang chọn</td><td>Dán đoạn code hoặc chỉ rõ file:dòng</td></tr>
+  <tr><td>Gửi ảnh (lỗi, mockup)</td><td>Dán hoặc kéo thả vào ô chat</td><td>Ctrl+V</td></tr>
+  <tr><td>Duyệt thay đổi</td><td>Xem diff, chấp nhận hoặc từ chối</td><td>Xem diff trong terminal, chọn Yes/No</td></tr>
+  <tr><td>Đổi chế độ (bình thường / tự chấp nhận sửa / plan)</td><td>Bộ chọn chế độ ở ô chat</td><td>Shift+Tab</td></tr>
+  <tr><td>Dừng giữa chừng</td><td>Nút Stop</td><td>Esc</td></tr>
+  <tr><td>Quay lại trước một prompt</td><td>Quay lại checkpoint (rewind) trong panel</td><td>Esc Esc hoặc <code>/rewind</code></td></tr>
+  <tr><td>Xem lệnh có sẵn</td><td colspan="2">Gõ <code>/</code></td></tr>
 </table>
 <p><strong>Ví dụ: prompt mơ hồ và prompt tốt</strong></p>
 <pre><code>❌ sửa bug login
@@ -169,7 +178,7 @@ claude doctor         # chẩn đoán lỗi cài đặt</code></pre>
 </div>
 <div class="step"><h4><span class="num">Step 3</span> CLAUDE.md: bộ nhớ của dự án</h4>
 
-<p>Claude đọc <code>CLAUDE.md</code> ở đầu mỗi phiên. Đây là nơi ghi những gì một đồng nghiệp mới cần biết: lệnh build/test, kiến trúc, quy ước, những điều cấm. Chạy <code>/init</code> để Claude tự tạo bản nháp, sau đó bạn <strong>đọc và sửa lại</strong>.</p>
+<p>Claude đọc <code>CLAUDE.md</code> ở đầu mỗi phiên. Đây là nơi ghi những gì một đồng nghiệp mới cần biết: lệnh build/test, kiến trúc, quy ước, những điều cấm. Gõ <code>/init</code> trong ô chat để Claude tự tạo bản nháp, sau đó bạn <strong>mở file trong editor, đọc và sửa lại</strong>.</p>
 <p><strong>Ví dụ mẫu</strong> (sẽ dùng cho <code>expense-cli</code>):</p>
 <pre><span class="lang">markdown</span><code># expense-cli
 
@@ -191,7 +200,11 @@ CLI quản lý chi tiêu cá nhân. Python 3.12, Typer, SQLite.
 - Type hint đầy đủ; hàm public có docstring
 - Tiền lưu dạng số nguyên (đồng). KHÔNG dùng float cho tiền
 - Mỗi tính năng mới phải có test trong `tests/`
-- Commit theo Conventional Commits (feat:, fix:, chore:, ...)
+
+## Git (làm việc local-first)
+- Mỗi tính năng làm trên một nhánh local `feat/...` hoặc `fix/...`
+- Commit LOCAL khi test xanh, message theo Conventional Commits
+- KHÔNG tự `git push`. Chỉ push khi tôi yêu cầu rõ ràng
 
 ## Không được làm
 - Không sửa migration đã commit, hãy tạo migration mới
@@ -199,35 +212,43 @@ CLI quản lý chi tiêu cá nhân. Python 3.12, Typer, SQLite.
 
 <ul>
   <li><strong>Vị trí:</strong> <code>./CLAUDE.md</code> (commit, cả nhóm dùng chung), <code>~/.claude/CLAUDE.md</code> (cá nhân, áp dụng cho mọi dự án), hoặc CLAUDE.md trong thư mục con (được nạp khi Claude làm việc ở đó).</li>
-  <li>Có thể import file khác: viết <code>@docs/architecture.md</code> bên trong CLAUDE.md.</li>
+  <li><strong>Import file khác:</strong> viết <code>@docs/architecture.md</code> bên trong CLAUDE.md thì nội dung file đó được nạp vào mọi phiên. CLAUDE.md nhờ vậy vẫn ngắn, tài liệu chi tiết nằm trong <code>docs/</code>. Chỉ import thứ lúc nào Claude cũng cần. Tài liệu thỉnh thoảng mới dùng thì ghi đường dẫn thường (không có <code>@</code>), ví dụ “khi deploy, đọc <code>docs/deploy.md</code>”, để Claude tự mở khi cần.</li>
   <li>Dùng <code>/memory</code> để mở và sửa nhanh.</li>
   <li><strong>Giữ ngắn gọn.</strong> Mỗi dòng phải có lý do tồn tại. Khi thấy Claude lặp lại cùng một lỗi, hãy thêm một dòng quy tắc.</li>
 </ul>
-<p class="tryit"><strong>▶ Thử ngay:</strong> Chạy <code>/init</code> trên dự án của bạn. Gạch bỏ những dòng chung chung (“viết code sạch”) và thêm 3 quy tắc thật sự riêng của dự án.</p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Gõ <code>/init</code> trên dự án của bạn. Gạch bỏ những dòng chung chung (“viết code sạch”) và thêm 3 quy tắc thật sự riêng của dự án, trong đó có quy tắc Git ở trên.</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 4</span> Quy trình Explore → Plan → Code → Commit</h4>
 
-<p>Với việc lớn hơn vài dòng code, đừng yêu cầu Claude “làm luôn”. Hãy chia thành 4 pha:</p>
+<p>Với việc lớn hơn vài dòng code, đừng yêu cầu Claude “làm luôn”. Hãy chia thành 4 pha.</p>
+<p class="note"><strong>Cách chạy ví dụ dưới đây:</strong> đây <em>không phải</em> một script. Đó là 4 prompt riêng biệt, gõ lần lượt vào ô chat trong <strong>cùng một cuộc trò chuyện</strong>. Đọc kết quả của prompt trước rồi mới gõ prompt sau. Các dòng bắt đầu bằng <code>#</code> chỉ là nhãn, không gõ vào. Ví dụ dùng lệnh <code>add</code> của expense-cli, nên cần làm xong mốc M2 của đề án trước.</p>
 <pre><code># 1. EXPLORE – chỉ đọc, chưa sửa
 Đọc @src/expense/ và giải thích luồng xử lý của lệnh `add`
 từ lúc nhận tham số đến lúc ghi DB. Chưa sửa gì.
 
-# 2. PLAN – bật plan mode (Shift+Tab đến khi thấy &quot;plan mode&quot;)
+# 2. PLAN – chọn chế độ Plan ở ô chat (CLI: Shift+Tab tới &quot;plan mode&quot;)
 Lập kế hoạch thêm lệnh `budget` để đặt hạn mức chi theo danh mục
 và cảnh báo khi vượt. Liệt kê: file sẽ sửa, thay đổi schema,
 test cần viết, rủi ro. Hãy suy nghĩ kỹ về các trường hợp biên.
 
-# 3. CODE – sau khi đã chỉnh và duyệt kế hoạch
+# 3. CODE – sau khi đã góp ý và duyệt kế hoạch
 Kế hoạch ổn, nhưng hạn mức tính theo THÁNG chứ không theo năm.
-Thực hiện từng bước, chạy `uv run pytest -q` sau mỗi bước.
+Tạo nhánh local feat/budget, thực hiện từng bước,
+chạy `uv run pytest -q` sau mỗi bước.
 
-# 4. COMMIT
-Chạy lint, sau đó commit theo Conventional Commits
-và tạo PR bằng `gh pr create` với mô tả đầy đủ.</code></pre>
+# 4. COMMIT – chỉ commit ở local
+Chạy lint rồi commit LOCAL theo Conventional Commits. Không push.</code></pre>
 
-<p>Mẹo: <strong>luôn cho Claude một cách tự kiểm tra</strong> (test, linter, chạy thử app, ảnh chụp kết quả mong muốn). Đây là yếu tố cải thiện chất lượng nhiều nhất.</p>
-<p class="tryit"><strong>▶ Thử ngay:</strong> Dùng plan mode cho một tính năng nhỏ trong dự án của bạn. Chỉnh kế hoạch ít nhất 2 lần trước khi cho Claude bắt tay vào làm.</p>
+<table>
+  <tr><th>Pha</th><th>Bạn làm</th><th>Claude làm</th></tr>
+  <tr><td>Explore</td><td>Gõ prompt 1, đọc giải thích, mở file đối chiếu</td><td>Đọc code, giải thích, <strong>không sửa</strong></td></tr>
+  <tr><td>Plan</td><td>Chuyển sang Plan, gõ prompt 2, góp ý tới khi ưng rồi duyệt</td><td>Viết kế hoạch, <strong>không sửa</strong></td></tr>
+  <tr><td>Code</td><td>Gõ prompt 3, xem từng diff, chấp nhận hoặc từ chối</td><td>Sửa code, chạy test</td></tr>
+  <tr><td>Commit</td><td>Mở tab Source Control (<code>Ctrl+Shift+G</code>) xem lại toàn bộ thay đổi, rồi gõ prompt 4</td><td>Lint, commit ở local</td></tr>
+</table>
+<p>Lợi ích: hiểu lầm được phát hiện ngay ở pha 1–2, khi sửa chỉ tốn một câu chat. Mẹo: <strong>luôn cho Claude một cách tự kiểm tra</strong> (test, linter, chạy thử app, ảnh chụp kết quả mong muốn). Đây là yếu tố cải thiện chất lượng nhiều nhất.</p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Dùng Plan cho một tính năng nhỏ. Góp ý vào kế hoạch ít nhất 2 lần trước khi cho Claude bắt tay vào làm.</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 5</span> Chế độ quyền và an toàn</h4>
@@ -240,49 +261,78 @@ và tạo PR bằng `gh pr create` với mô tả đầy đủ.</code></pre>
   <tr><td>Auto</td><td>Claude tự chạy, có lớp kiểm tra an toàn chặn hành động rủi ro</td><td>Việc dài, ít cần giám sát</td></tr>
   <tr><td>Bypass permissions</td><td>Không hỏi gì cả</td><td>Chỉ trong container hoặc máy ảo cô lập</td></tr>
 </table>
-<p>Để bớt bị hỏi lặp lại, dùng <code>/permissions</code> để thêm quy tắc cho phép, ví dụ <code>Bash(uv run pytest:*)</code>. Session 2 sẽ cấu hình chi tiết bằng file.</p>
-<p class="tryit"><strong>▶ Thử ngay:</strong> Thêm quy tắc cho phép lệnh chạy test của dự án, rồi yêu cầu Claude chạy test 2 lần. Lần thứ hai nó không còn hỏi nữa.</p>
+<p>Dùng <code>/permissions</code> để thêm quy tắc:</p>
+<ul>
+  <li><strong>Allow</strong> những lệnh an toàn hay dùng để bớt bị hỏi, ví dụ <code>Bash(uv run pytest:*)</code>.</li>
+  <li><strong>Ask</strong> cho <code>Bash(git push:*)</code>: Claude luôn phải hỏi bạn trước khi push, kể cả khi đang ở chế độ tự chấp nhận. Đây là chốt chặn của cách làm local-first.</li>
+</ul>
+<p>Session 2 sẽ cấu hình các quy tắc này bằng file để dùng chung cho cả nhóm.</p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Thêm quy tắc Allow cho lệnh chạy test và quy tắc Ask cho <code>git push</code>. Yêu cầu Claude chạy test 2 lần (lần hai không còn hỏi), rồi yêu cầu nó push (phải hỏi bạn).</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 6</span> Quản lý context và phiên làm việc</h4>
 
-<p>Context window có giới hạn. Hội thoại càng dài, chất lượng càng có thể giảm. Nguyên tắc: <strong>một phiên cho một nhiệm vụ</strong>.</p>
+<p>Context window có giới hạn. Hội thoại càng dài, chất lượng càng có thể giảm. Nguyên tắc: <strong>một cuộc trò chuyện cho một nhiệm vụ</strong>. Các lệnh dưới đây gõ trực tiếp vào ô chat (cả trong panel VS Code lẫn CLI):</p>
 <pre><span class="lang">text</span><code>/context                 # xem context đang dùng bao nhiêu, do đâu
 /compact giữ lại danh sách file đã sửa và các test còn fail
                          # nén hội thoại, kèm chỉ dẫn cần giữ gì
 /clear                   # xoá context khi chuyển sang việc khác
-/rewind                  # (hoặc Esc Esc) quay code + hội thoại về checkpoint
+/rewind                  # quay code + hội thoại về checkpoint trước đó
 /model                   # đổi model
-/usage                   # xem hạn mức / chi phí đã dùng
+/usage                   # xem hạn mức / chi phí đã dùng</code></pre>
 
-claude -c                # tiếp tục phiên gần nhất
-claude -r                # chọn một phiên cũ để tiếp tục (hoặc /resume)</code></pre>
-<p class="tryit"><strong>▶ Thử ngay:</strong> Làm một việc nhỏ, rồi <code>/clear</code> và làm việc khác. Sau đó dùng <code>claude -r</code> quay lại phiên đầu tiên.</p>
+<ul>
+  <li><strong>Checkpoint thay cho commit:</strong> Claude Code tự lưu checkpoint trước mỗi lượt sửa. Muốn thử một hướng rồi bỏ, cứ rewind, không cần commit để “lưu tạm”. Nhờ vậy lịch sử git chỉ chứa những trạng thái thật sự đáng giữ.</li>
+  <li><strong>Mở lại cuộc trò chuyện cũ:</strong> trong panel VS Code, chọn từ danh sách lịch sử. Trong terminal, <code>claude -c</code> tiếp tục phiên gần nhất, <code>claude -r</code> chọn một phiên cũ.</li>
+</ul>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Làm một việc nhỏ, <code>/clear</code> rồi làm việc khác. Sau đó mở lại cuộc trò chuyện đầu tiên từ lịch sử.</p>
 
 </div>
-<div class="step"><h4><span class="num">Step 7</span> Git và GitHub cùng Claude</h4>
+<div class="step"><h4><span class="num">Step 7</span> Git local-first cùng Claude và VS Code</h4>
 
-<p>Claude dùng git và <code>gh</code> rất tốt. Một số prompt hay dùng:</p>
-<pre><code>Tạo nhánh feat/export-json từ main.
+<p>Nguyên tắc: <strong>làm và commit ở local thoải mái, chỉ push khi xong một mốc</strong>. GitHub chỉ nhận những thay đổi đã chạy được và đã được gộp gọn.</p>
+<pre><span class="lang">text</span><code> Claude sửa code ──► bạn xem diff trong VS Code ──► test local
+       ▲                                                │
+       └──── chưa ổn: góp ý hoặc rewind ◄───────────────┤
+                                                        │ ổn
+                                                        ▼
+                                  git commit (local, bao nhiêu lần cũng được)
+                                                        │ xong một mốc
+                                                        ▼
+                                gộp commit ──► git push (1 lần) ──► Pull Request</code></pre>
 
-Xem `git diff main` và viết commit message theo Conventional Commits,
-tách thành nhiều commit nếu có nhiều thay đổi không liên quan.
+<p><strong>Prompt hay dùng trong ngày:</strong></p>
+<pre><code>Tạo nhánh local feat/export-json từ main.
+
+Xem `git diff` và commit LOCAL theo Conventional Commits,
+tách thành nhiều commit nếu có nhiều thay đổi không liên quan. Không push.
 
 Có conflict khi rebase lên main. Giải thích từng conflict, đề xuất cách
 giải quyết, chờ tôi đồng ý rồi mới sửa.
 
-Tạo PR: tiêu đề ngắn, mô tả gồm Tóm tắt / Thay đổi / Cách kiểm thử.
+/review       ← nhờ Claude review toàn bộ thay đổi của nhánh trước khi push</code></pre>
 
-Đọc các comment review trên PR #12 và sửa theo từng comment.</code></pre>
+<p><strong>Khi xong một mốc và muốn đưa lên GitHub:</strong></p>
+<pre><span class="lang">bash</span><code># 1. (Tuỳ chọn) gộp mọi commit local của nhánh thành 1 commit gọn
+git reset --soft $(git merge-base main HEAD)
+git commit -m &quot;feat: thêm lệnh budget theo tháng&quot;
 
-<p>Lệnh có sẵn <code>/review</code> cho phép Claude review thay đổi hiện tại hoặc một PR.</p>
+# 2. Push một lần và tạo PR (hoặc nhờ Claude: &quot;Push nhánh này và tạo PR&quot;)
+git push -u origin feat/budget
+gh pr create --fill
+
+# 3. Merge trên GitHub, nên chọn &quot;Squash and merge&quot;, rồi cập nhật local
+git switch main &amp;&amp; git pull
+git branch -D feat/budget   # -D vì sau squash merge, git không nhận ra nhánh đã được merge</code></pre>
+
+<p>Tab <strong>Source Control</strong> của VS Code (<code>Ctrl+Shift+G</code>) là nơi tiện nhất để xem lại toàn bộ thay đổi, stage từng phần, hoặc huỷ thay đổi của một file trước khi commit. Lần đầu push cần có repo trên GitHub: <code>gh repo create expense-cli --private --source=. --push</code> sẽ tạo repo và push luôn.</p>
 
 </div>
 <h4>Bài tập Session 1</h4><div class="exercise"><h5>Bài 1.1: Khám phá một codebase lạ</h5>
 
 <p><strong>Bối cảnh:</strong> bạn vừa vào một dự án mới, cần hiểu codebase thật nhanh.</p>
 <ol>
-  <li><code>git clone https://github.com/pallets/click &amp;&amp; cd click &amp;&amp; claude</code></li>
+  <li><code>git clone https://github.com/pallets/click &amp;&amp; code click</code>, rồi mở panel Claude trong cửa sổ VS Code vừa mở.</li>
   <li>Hỏi lần lượt: <em>“Khi chạy một lệnh Click, code đi qua những class/hàm nào từ lúc gọi đến lúc thực thi callback?”</em>, <em>“Option được parse ở đâu?”</em>, <em>“Muốn thêm một kiểu tham số mới thì sửa ở đâu?”</em></li>
   <li>Yêu cầu Claude vẽ sơ đồ Mermaid của luồng trên và lưu vào <code>notes/flow.md</code>.</li>
   <li>Tự mở 2–3 file trong sơ đồ để kiểm chứng.</li>
@@ -295,7 +345,7 @@ Tạo PR: tiêu đề ngắn, mô tả gồm Tóm tắt / Thay đổi / Cách ki
 <ol>
   <li>Trên dự án của bạn, tạm đổi tên CLAUDE.md (nếu có). Yêu cầu Claude thêm một tính năng nhỏ. Ghi lại: nó có chạy đúng lệnh test không, có theo đúng convention không?</li>
   <li><code>/init</code>, sửa CLAUDE.md theo mẫu ở Step 3, rồi <code>/clear</code>.</li>
-  <li><code>git stash</code> để bỏ thay đổi cũ, sau đó lặp lại đúng prompt đó.</li>
+  <li>Huỷ phần code đã sửa ở lần trước (rewind, hoặc Discard từng file trong tab Source Control, nhớ giữ lại CLAUDE.md), sau đó lặp lại đúng prompt đó.</li>
   <li>So sánh hai lần theo các tiêu chí: số lần bạn phải sửa hướng, có chạy test không, có đúng convention không.</li>
 </ol>
 
@@ -327,8 +377,8 @@ Tạo PR: tiêu đề ngắn, mô tả gồm Tóm tắt / Thay đổi / Cách ki
 
 <ol>
   <li>Đưa một prompt cố tình mơ hồ: <em>“Thêm tính năng export”</em>. Để Claude làm vài bước.</li>
-  <li>Nhấn Esc để dừng, rồi Esc Esc và chọn quay về trước prompt đó (cả code lẫn hội thoại).</li>
-  <li>Bật plan mode và viết lại prompt rõ ràng: định dạng nào, lệnh CLI ra sao, xử lý dữ liệu rỗng thế nào.</li>
+  <li>Bấm Stop (CLI: Esc) để dừng, rồi rewind về checkpoint trước prompt đó (cả code lẫn hội thoại). Mở tab Source Control kiểm tra: các thay đổi đã biến mất mà không cần dùng git.</li>
+  <li>Chuyển sang chế độ Plan và viết lại prompt rõ ràng: định dạng nào, lệnh CLI ra sao, xử lý dữ liệu rỗng thế nào.</li>
   <li>So sánh kế hoạch mới với hướng đi sai ban đầu.</li>
 </ol>
 
@@ -340,6 +390,18 @@ Tạo PR: tiêu đề ngắn, mô tả gồm Tóm tắt / Thay đổi / Cách ki
   <li>Prompt: <em>“Có conflict. Giải thích ý định của mỗi bên, đề xuất bản gộp giữ được cả hai ý định, chờ tôi duyệt.”</em></li>
   <li>Duyệt, để Claude hoàn tất merge và chạy test.</li>
 </ol>
+
+</div>
+<div class="exercise"><h5>Bài 1.6: Một ngày làm việc local-first</h5>
+
+<ol>
+  <li>Tạo nhánh local <code>feat/list-sort</code>. Yêu cầu Claude thêm tuỳ chọn <code>--sort amount|date</code> cho lệnh <code>list</code>.</li>
+  <li>Thử 2 cách cài đặt khác nhau: làm cách thứ nhất, rewind, rồi làm cách thứ hai. Không commit gì trong lúc thử.</li>
+  <li>Khi đã chọn được cách tốt, commit local vài lần trong lúc hoàn thiện (thêm test, sửa lint…).</li>
+  <li>Gõ <code>/review</code> để Claude review cả nhánh, sửa theo góp ý.</li>
+  <li>Gộp các commit thành 1 (<code>git reset --soft $(git merge-base main HEAD)</code> rồi commit lại), push một lần, tạo PR và chọn “Squash and merge”.</li>
+</ol>
+<p class="done"><strong>Kết quả mong đợi:</strong> trên GitHub, PR chỉ có 1 commit sạch, dù ở local bạn đã thử và sửa nhiều lần.</p>
 
 </div>
 <div class="capstone"><h4>🎯 Đề án Session 1: Xây expense-cli từ con số 0</h4>
@@ -378,13 +440,13 @@ $ expense export --format json &gt; backup.json</code></pre>
 
 <h5>Các mốc thực hiện (kèm prompt mẫu)</h5>
 <ol>
-  <li><strong>M0 · Khởi tạo</strong>: <em>“Khởi tạo dự án Python 3.12 bằng uv, src layout, package <code>expense</code>, dùng Typer, pytest, pytest-cov, ruff. Thêm lệnh <code>expense --version</code> và 1 test. Chưa làm tính năng.”</em> Sau đó chạy <code>/init</code> rồi chỉnh CLAUDE.md theo mẫu ở Step 3.</li>
+  <li><strong>M0 · Khởi tạo</strong>: tạo thư mục <code>expense-cli</code>, mở bằng VS Code (<code>code expense-cli</code>), mở panel Claude và gõ: <em>“Khởi tạo dự án Python 3.12 bằng uv, src layout, package <code>expense</code>, dùng Typer, pytest, pytest-cov, ruff. Thêm lệnh <code>expense --version</code> và 1 test. Chưa làm tính năng.”</em> Sau đó chạy <code>/init</code> rồi chỉnh CLAUDE.md theo mẫu ở Step 3.</li>
   <li><strong>M1 · Lớp DB và migration</strong> (plan mode): <em>“Lập kế hoạch cho db.py: kết nối SQLite (đường dẫn lấy từ biến môi trường EXPENSE_DB, mặc định ~/.expense.db), hệ thống migration đơn giản đọc file trong migrations/ và lưu version vào bảng schema_version. Test dùng DB tạm.”</em></li>
-  <li><strong>M2 · add / list / delete</strong>: viết test trước cho các trường hợp: số tiền âm, ngày sai định dạng, danh mục rỗng, lọc theo tháng.</li>
+  <li><strong>M2 · add / list / delete</strong>: <em>“Thêm lệnh <code>expense add &lt;amount&gt; &lt;category&gt; [--note] [--date YYYY-MM-DD]</code>, <code>expense list [--month YYYY-MM] [--category]</code> và <code>expense delete &lt;id&gt;</code>. Viết test trước cho các trường hợp: số tiền âm hoặc 0, ngày sai định dạng, danh mục rỗng, lọc theo tháng. Lệnh định nghĩa trong cli.py, SQL chỉ nằm trong db.py.”</em> Kiểm tra: <code>uv run expense --help</code> phải liệt kê add, list, delete. Xong M2, commit local rồi tạo repo GitHub và push lần đầu bằng <code>gh repo create expense-cli --private --source=. --push</code>. <strong>Giờ quay lại học Step 4–7.</strong></li>
   <li><strong>M3 · report</strong>: format tiền kiểu Việt Nam (dấu chấm ngăn cách hàng nghìn), dùng <code>rich</code> để vẽ bảng.</li>
   <li><strong>M4 · import / export</strong>: <em>“Import CSV gồm các cột date, amount, category, note. Dòng lỗi thì bỏ qua và báo số dòng cùng lý do, không được dừng cả quá trình. Thêm file mẫu tests/fixtures/sample.csv có cả dòng lỗi.”</em></li>
   <li><strong>M5 · Chất lượng</strong>: <em>“Chạy coverage, bổ sung test tới khi đạt ≥ 80%. Sửa mọi cảnh báo ruff. Viết README: cài đặt, ví dụ dùng, cách phát triển.”</em></li>
-  <li><strong>M6 · Phát hành</strong>: mỗi mốc là một PR có mô tả rõ ràng, merge vào main, gắn tag <code>v0.1.0</code>.</li>
+  <li><strong>M6 · Local-first và phát hành</strong>: từ M3 trở đi, mỗi mốc làm trên một nhánh local; commit local tự do; cuối mốc gộp commit, push một lần, tạo PR, chọn “Squash and merge”. Xong M5 thì gắn tag <code>v0.1.0</code> và push tag.</li>
 </ol>
 
 <h5>Checklist nghiệm thu</h5>
@@ -393,7 +455,7 @@ $ expense export --format json &gt; backup.json</code></pre>
   <li>☐ <code>uv run pytest --cov</code> xanh, coverage ≥ 80%; <code>ruff check</code> sạch</li>
   <li>☐ Tiền không bao giờ là float; dòng CSV lỗi được báo đúng số dòng</li>
   <li>☐ CLAUDE.md phản ánh đúng dự án và được cập nhật trong quá trình làm</li>
-  <li>☐ Lịch sử git gồm các PR có ý nghĩa</li>
+  <li>☐ Lịch sử trên GitHub gọn: mỗi mốc một PR, không có chuỗi commit kiểu “fix”, “wip”</li>
   <li>☐ Ghi chú cá nhân <code>RETRO.md</code>: tỉ lệ code bạn tự gõ, 3 lần Claude đi sai và cách bạn sửa hướng, 3 prompt hiệu quả nhất</li>
 </ul>
 
@@ -403,9 +465,9 @@ $ expense export --format json &gt; backup.json</code></pre>
 
 <div class="session" id="s2">
 <h3>Session 2: Claude Code nâng cao (tuỳ biến và tự động hoá)</h3>
-<div class="meta">Tuần 1 · ~4 giờ học + 3–4 giờ đề án · Công cụ: Claude Code, GitHub Actions</div>
+<div class="meta">Tuần 1 · ~4 giờ học + 3–4 giờ đề án · Công cụ: VS Code + Claude Code, git hooks, GitHub Actions</div>
 <p><strong>Mục tiêu:</strong> biến Claude Code thành công cụ của riêng nhóm bạn: lệnh tắt cho quy trình lặp lại, kiến thức chuyên biệt, quy tắc bắt buộc, chạy tự động trong script và CI.</p>
-<p><strong>Đầu ra:</strong> repo <code>expense-cli</code> có đầy đủ thư mục <code>.claude/</code> (settings, commands, skills, hooks, agents) và GitHub Action dùng Claude.</p>
+<p><strong>Đầu ra:</strong> repo <code>expense-cli</code> có đầy đủ thư mục <code>.claude/</code> (settings, commands, skills, hooks, agents) pre-push hook để Claude review ở local trước khi push, và GitHub Action dùng Claude.</p>
 <p>Cấu trúc thư mục sẽ có sau session này:</p><pre><span class="lang">text</span><code>expense-cli/
 ├── CLAUDE.md
 ├── .mcp.json                      # (Session 3)
@@ -425,6 +487,8 @@ $ expense export --format json &gt; backup.json</code></pre>
 │   └── hooks/
 │       ├── block-dangerous.sh
 │       └── require-green-tests.sh
+├── scripts/hooks/
+│   └── pre-push                   # test + Claude review trước khi push
 └── .github/workflows/
     ├── claude.yml
     └── claude-review.yml</code></pre>
@@ -445,6 +509,10 @@ $ expense export --format json &gt; backup.json</code></pre>
       &quot;Bash(git diff:*)&quot;,
       &quot;Bash(gh issue view:*)&quot;
     ],
+    &quot;ask&quot;: [
+      &quot;Bash(git push:*)&quot;,
+      &quot;Bash(gh pr create:*)&quot;
+    ],
     &quot;deny&quot;: [
       &quot;Read(./.env)&quot;,
       &quot;Read(./secrets/**)&quot;,
@@ -454,7 +522,7 @@ $ expense export --format json &gt; backup.json</code></pre>
   }
 }</code></pre>
 
-<p><code>deny</code> luôn được ưu tiên hơn <code>allow</code>. Dùng <code>/permissions</code> để xem và chỉnh trong giao diện.</p>
+<p><code>ask</code>: luôn hỏi lại, kể cả khi đang ở chế độ tự chấp nhận (dùng cho push để giữ nguyên tắc local-first). <code>deny</code> luôn được ưu tiên hơn <code>allow</code>. Dùng <code>/permissions</code> để xem và chỉnh trong giao diện.</p>
 <p class="tryit"><strong>▶ Thử ngay:</strong> Tạo file trên, rồi yêu cầu Claude <em>“đọc file .env”</em>. Xác nhận yêu cầu bị từ chối.</p>
 
 </div>
@@ -473,7 +541,7 @@ Sửa GitHub issue #$ARGUMENTS theo đúng các bước:
 3. Tạo nhánh `fix/$ARGUMENTS-&lt;mo-ta-ngan&gt;`.
 4. Viết test tái hiện lỗi. Chạy để xác nhận test FAIL.
 5. Sửa code ở mức tối thiểu để test PASS. Chạy toàn bộ `uv run pytest -q`.
-6. Commit: `fix: &lt;mô tả&gt; (closes #$ARGUMENTS)`.
+6. Commit LOCAL: `fix: &lt;mô tả&gt; (closes #$ARGUMENTS)`. KHÔNG push.
 7. Báo cáo: nguyên nhân, cách sửa, các file đã đổi.</code></pre>
 
 <p>Sử dụng: <code>/fix-issue 42</code>. Lệnh cá nhân (dùng cho mọi dự án) đặt trong <code>~/.claude/commands/</code>.</p>
@@ -589,7 +657,7 @@ Không tự sửa code. Nếu không có vấn đề gì, nói rõ điều đó.
 </div>
 <div class="step"><h4><span class="num">Step 6</span> Headless mode: dùng Claude trong script</h4>
 
-<p><code>claude -p</code> chạy một yêu cầu rồi thoát, không mở giao diện tương tác. Rất hợp để ghép với pipe, script, cron hay CI.</p>
+<p>Chạy trong terminal tích hợp của VS Code. <code>claude -p</code> chạy một yêu cầu rồi thoát, không mở giao diện tương tác. Rất hợp để ghép với pipe, script, cron hay CI.</p>
 <pre><span class="lang">bash</span><code># Hỏi nhanh với dữ liệu từ stdin
 cat src/expense/db.py | claude -p &quot;Tìm các chỗ có thể bị SQL injection&quot;
 
@@ -620,19 +688,44 @@ echo &quot;Đã ghi CHANGELOG-$(date +%F).md&quot;</code></pre>
 <pre><span class="lang">bash</span><code>git worktree add ../expense-budget -b feat/budget
 git worktree add ../expense-tests  -b chore/more-tests
 
-# Terminal 1
-cd ../expense-budget &amp;&amp; claude     # làm tính năng budget
-# Terminal 2
-cd ../expense-tests  &amp;&amp; claude     # bổ sung test cho phần cũ
+# Mở mỗi worktree trong một cửa sổ VS Code riêng
+code ../expense-budget     # cửa sổ 1: mở panel Claude, làm tính năng budget
+code ../expense-tests      # cửa sổ 2: mở panel Claude, bổ sung test
 
 # Xong việc
 git worktree remove ../expense-tests</code></pre>
 
-<p>Mỗi worktree là một thư mục làm việc riêng trên một nhánh riêng, nên các phiên Claude không giẫm chân nhau. Claude Code trên web (claude.ai/code) cũng cho phép giao nhiều task chạy song song trên cloud.</p>
+<p>Mỗi worktree là một thư mục làm việc riêng trên một nhánh riêng, nên các phiên Claude không giẫm chân nhau. Mọi thứ vẫn ở local; mỗi nhánh được push riêng khi xong.</p>
 
 </div>
-<div class="step"><h4><span class="num">Step 8</span> Claude trong GitHub Actions</h4>
+<div class="step"><h4><span class="num">Step 8</span> Review ở local trước khi push (git pre-push hook)</h4>
 
+<p>Đây là chốt chặn cuối cùng ở local: mỗi lần <code>git push</code>, git tự chạy test và nhờ Claude review các commit sắp được push. Nếu có vấn đề nghiêm trọng thì push bị huỷ, nhờ vậy GitHub không nhận code lỗi.</p>
+<pre><span class="lang">bash</span><code>#!/usr/bin/env bash
+# scripts/hooks/pre-push – chạy test + Claude review trước khi push
+set -euo pipefail
+base=$(git merge-base HEAD origin/main 2&gt;/dev/null || git rev-list --max-parents=0 HEAD)
+
+uv run pytest -q || { echo &quot;Test fail, huỷ push.&quot;; exit 1; }
+
+review=$(git diff &quot;$base&quot;...HEAD | claude -p &quot;Review diff sau. Dòng đầu tiên in đúng một từ:
+BLOCK nếu có lỗi nghiêm trọng (bug rõ ràng, lộ secret, SQL injection), ngược lại OK.
+Sau đó liệt kê vấn đề ngắn gọn dạng file:dòng – vấn đề.&quot;)
+echo &quot;$review&quot;
+if [ &quot;$(echo &quot;$review&quot; | head -1 | tr -d &#x27;[:space:]&#x27;)&quot; != &quot;OK&quot; ]; then
+  echo &quot;Claude phát hiện vấn đề nghiêm trọng, huỷ push. (Bỏ qua khi thật cần: git push --no-verify)&quot;
+  exit 1
+fi</code></pre>
+<pre><span class="lang">bash</span><code>chmod +x scripts/hooks/pre-push
+git config core.hooksPath scripts/hooks   # mỗi người chạy một lần sau khi clone</code></pre>
+
+<p>Đặt hook trong <code>scripts/hooks/</code> (thay vì <code>.git/hooks/</code>) để file được commit cùng repo, cả nhóm dùng chung. Hook chỉ chạy khi push, nên không làm chậm việc commit local hằng ngày.</p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Cố ý thêm một đoạn ghép chuỗi vào SQL trong <code>db.py</code>, commit local rồi push. Xem hook chặn lại.</p>
+
+</div>
+<div class="step"><h4><span class="num">Step 9</span> Claude trong GitHub Actions</h4>
+
+<p>Với cách làm local-first, các workflow dưới đây chỉ chạy khi bạn push. Code đã được test và review ở local (Step 8), CI là lớp kiểm tra cuối cùng.</p>
 <p>Cách nhanh nhất: trong Claude Code, chạy <code>/install-github-app</code>. Lệnh này sẽ hướng dẫn cài GitHub App, tạo secret và tạo file workflow. Nếu muốn làm thủ công, tạo <code>.github/workflows/claude.yml</code> để Claude phản hồi khi được nhắc <code>@claude</code>:</p>
 <pre><span class="lang">yaml</span><code>name: Claude
 on:
@@ -688,7 +781,7 @@ jobs:
 <p><em>Tham số của action có thể thay đổi theo phiên bản, hãy đối chiếu với README của <a href="https://github.com/anthropics/claude-code-action">anthropics/claude-code-action</a>.</em></p>
 
 </div>
-<div class="step"><h4><span class="num">Step 9</span> Plugins: chia sẻ cấu hình cho cả nhóm</h4>
+<div class="step"><h4><span class="num">Step 10</span> Plugins: chia sẻ cấu hình cho cả nhóm</h4>
 
 <p>Một plugin đóng gói commands, skills, agents, hooks và cấu hình MCP để người khác cài bằng một lệnh. Dùng <code>/plugin</code> để duyệt marketplace và cài plugin có sẵn. Khi bộ <code>.claude/</code> của bạn đã ổn định, hãy đóng gói thành plugin để dùng lại ở các repo khác.</p>
 
@@ -739,7 +832,7 @@ Các bước: (1) dừng nếu không ở main hoặc còn thay đổi chưa com
 </div>
 <div class="exercise"><h5>Bài 2.5: Hai Claude song song</h5>
 
-<p>Tạo 2 worktree: một phiên làm lệnh <code>budget</code>, một phiên viết test cho <code>import</code>. Merge cả hai vào main, giải quyết conflict (nếu có) với sự trợ giúp của Claude.</p>
+<p>Tạo 2 worktree và mở mỗi cái trong một cửa sổ VS Code: một phiên làm lệnh <code>budget</code>, một phiên viết test cho <code>import</code>. Merge cả hai vào main, giải quyết conflict (nếu có) với sự trợ giúp của Claude.</p>
 
 </div>
 <div class="capstone"><h4>🎯 Đề án Session 2: Biến expense-cli thành repo “AI-ready”</h4>
@@ -753,15 +846,17 @@ Các bước: (1) dừng nếu không ở main hoặc còn thay đổi chưa com
   <li><strong>M4 · Luật:</strong> 4 hook ở Bài 2.2.</li>
   <li><strong>M5 · Chuyên gia:</strong> subagent <code>code-reviewer</code> và <code>test-writer</code>; lệnh <code>/new-feature</code> phải gọi cả hai.</li>
   <li><strong>M6 · CI:</strong> workflow <code>claude.yml</code> và <code>claude-review.yml</code>, kèm workflow test thường (pytest + ruff) để Claude thấy kết quả CI.</li>
-  <li><strong>M7 · Tài liệu:</strong> <code>docs/ai-workflow.md</code> giải thích từng thành phần, cách dùng, và cách tắt khi cần.</li>
+  <li><strong>M7 · Chốt chặn local:</strong> pre-push hook ở Step 8, kèm hướng dẫn chạy <code>git config core.hooksPath scripts/hooks</code> trong README.</li>
+  <li><strong>M8 · Tài liệu:</strong> <code>docs/ai-workflow.md</code> giải thích từng thành phần, cách dùng, và cách tắt khi cần.</li>
 </ol>
 <h5>Kịch bản nghiệm thu</h5>
 <ol>
   <li>Tạo issue: <em>“Lệnh report nên hỗ trợ <code>--year 2026</code> để xem tổng hợp theo năm. @claude”</em></li>
   <li>Claude tạo PR có test → workflow test xanh → Claude review tự động để lại nhận xét.</li>
-  <li>Trên máy, chạy <code>/fix-issue</code> với một issue khác; hook format và hook chặn test đỏ hoạt động.</li>
+  <li>Trong VS Code, chạy <code>/fix-issue</code> với một issue khác: hook format và hook chặn test đỏ hoạt động, Claude commit ở local và <em>hỏi</em> trước khi push. Bạn push một lần, pre-push hook review xong mới cho đi.</li>
   <li>Bạn chỉ cần đọc, góp ý một vòng (comment <code>@claude</code> trên PR), rồi merge.</li>
 </ol>
+<p><em>Lưu ý: khi được nhắc <code>@claude</code> trên GitHub, Claude tạo nhánh và commit ngay trên GitHub. Muốn sửa tiếp ở local thì <code>git fetch</code> rồi checkout nhánh đó.</em></p>
 <p class="done"><strong>Hoàn thành khi:</strong> kịch bản trên chạy trọn vẹn, và một đồng nghiệp (hoặc chính bạn trên một máy khác) clone repo về, dùng được ngay mà không cần cấu hình thêm.</p>
 
 </div>
@@ -770,7 +865,7 @@ Các bước: (1) dừng nếu không ở main hoặc còn thay đổi chưa com
 
 <div class="session" id="s3">
 <h3>Session 3: MCP, kết nối Claude với thế giới bên ngoài</h3>
-<div class="meta">Tuần 2 · ~4 giờ học + 3–4 giờ đề án · Công cụ: Claude Code, Claude Desktop, MCP Python SDK</div>
+<div class="meta">Tuần 2 · ~4 giờ học + 3–4 giờ đề án · Công cụ: VS Code + Claude Code, MCP Python SDK, (tuỳ chọn) Claude Desktop</div>
 <p><strong>Mục tiêu:</strong> hiểu Model Context Protocol, gắn MCP server có sẵn vào Claude, và tự viết server cho dữ liệu của mình.</p>
 <p><strong>Đầu ra:</strong> MCP server <code>expense-mcp</code> cho phép hỏi và ghi chi tiêu bằng ngôn ngữ tự nhiên từ Claude Code hoặc Claude Desktop.</p><div class="step"><h4><span class="num">Step 1</span> MCP là gì</h4>
 
@@ -810,7 +905,7 @@ claude mcp remove playwright # gỡ</code></pre>
   }
 }</code></pre>
 
-<p>Trong phiên Claude Code, gõ <code>/mcp</code> để xem trạng thái các server và đăng nhập (OAuth). Tên công cụ MCP có dạng <code>mcp__&lt;server&gt;__&lt;tool&gt;</code>; bạn có thể cho phép sẵn trong permissions, ví dụ <code>"mcp__playwright"</code>.</p>
+<p>Các lệnh <code>claude mcp</code> chạy trong terminal của VS Code. Server khai báo trong <code>.mcp.json</code> được cả panel VS Code lẫn CLI dùng. Trong ô chat, gõ <code>/mcp</code> để xem trạng thái các server và đăng nhập (OAuth). Tên công cụ MCP có dạng <code>mcp__&lt;server&gt;__&lt;tool&gt;</code>; bạn có thể cho phép sẵn trong permissions, ví dụ <code>"mcp__playwright"</code>.</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 3</span> Dùng MCP trong công việc thực tế</h4>
@@ -934,7 +1029,7 @@ npx @modelcontextprotocol/inspector uv run server.py
 claude mcp add expenses -e EXPENSE_DB=$HOME/.expense.db \
   -- uv run --directory /duong/dan/tuyet/doi/expense-mcp server.py</code></pre>
 
-<p>Gắn vào Claude Desktop: Settings → Developer → Edit Config, sửa file <code>claude_desktop_config.json</code>:</p>
+<p>(Tuỳ chọn) Gắn vào Claude Desktop: Settings → Developer → Edit Config, sửa file <code>claude_desktop_config.json</code>:</p>
 <pre><span class="lang">json</span><code>{
   &quot;mcpServers&quot;: {
     &quot;expenses&quot;: {
@@ -944,7 +1039,7 @@ claude mcp add expenses -e EXPENSE_DB=$HOME/.expense.db \
     }
   }
 }</code></pre>
-<p class="tryit"><strong>▶ Thử ngay:</strong> Hỏi Claude: <em>“Tháng này tôi tiêu cho ăn uống bao nhiêu? Thêm giúp tôi 35k cà phê sáng nay.”</em> Kiểm tra lại bằng <code>expense list</code>.</p>
+<p class="tryit"><strong>▶ Thử ngay:</strong> Trong panel Claude của VS Code, hỏi: <em>“Tháng này tôi tiêu cho ăn uống bao nhiêu? Thêm giúp tôi 35k cà phê sáng nay.”</em> Kiểm tra lại bằng <code>expense list</code>.</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 6</span> Resources và prompts</h4>
@@ -1038,7 +1133,7 @@ def test_add_rejects_negative(server):
   <li><strong>M3:</strong> thêm transport HTTP và xác thực.</li>
   <li><strong>M4:</strong> chạy kịch bản nghiệm thu, tinh chỉnh description của tool cho tới khi Claude chọn đúng tool ở mọi câu hỏi.</li>
 </ol>
-<h5>Kịch bản nghiệm thu (hỏi trong Claude Desktop)</h5>
+<h5>Kịch bản nghiệm thu (hỏi trong panel Claude của VS Code, hoặc Claude Desktop)</h5>
 <ol>
   <li>“Tháng 11 tôi tiêu nhiều nhất vào gì? So với tháng 10 thì sao?”</li>
   <li>“Ghi giúp: hôm qua đổ xăng 80k, trưa nay ăn bún 40k.”</li>
@@ -1054,15 +1149,17 @@ def test_add_rejects_negative(server):
 
 <div class="session" id="s4">
 <h3>Session 4: Lập trình với Claude API</h3>
-<div class="meta">Tuần 2 · ~4 giờ học + 5–6 giờ đề án · Công cụ: Anthropic Python SDK, Claude Console</div>
+<div class="meta">Tuần 2 · ~4 giờ học + 5–6 giờ đề án · Công cụ: VS Code + Claude Code, Anthropic Python SDK, Claude Console</div>
 <p><strong>Mục tiêu:</strong> tích hợp Claude vào ứng dụng của bạn qua API: hội thoại, streaming, đọc ảnh/PDF, gọi công cụ, trả JSON đúng schema, và tối ưu chi phí.</p>
 <p><strong>Đầu ra:</strong> một chatbot hỏi đáp tài liệu (RAG) có web UI, trích dẫn nguồn và bộ đánh giá tự động.</p>
+<p><strong>Môi trường:</strong> mở <code>claude-api-lab</code> trong VS Code, chọn interpreter <code>.venv</code> (Command Palette → “Python: Select Interpreter”), chạy file trong terminal tích hợp. Khi đọc code mẫu, bôi đen một đoạn và hỏi Claude trong panel “giải thích đoạn này” hoặc “thêm xử lý lỗi cho đoạn này”. Đặt breakpoint rồi nhấn F5 để xem cấu trúc object <code>response</code> trả về.</p>
 <p><em>Ví dụ dùng model <code>claude-opus-5-5</code>. Khi cần nhanh và rẻ hơn, đổi sang <code>claude-sonnet-5-5</code> hoặc <code>claude-haiku-5-5</code> (Step 9 nói về cách chọn).</em></p><div class="step"><h4><span class="num">Step 1</span> Thiết lập và request đầu tiên</h4>
 
 <pre><span class="lang">bash</span><code>mkdir claude-api-lab &amp;&amp; cd claude-api-lab
 uv init &amp;&amp; uv add anthropic python-dotenv
 echo &quot;ANTHROPIC_API_KEY=sk-ant-...&quot; &gt; .env
-echo &quot;.env&quot; &gt;&gt; .gitignore      # KHÔNG BAO GIỜ commit API key</code></pre>
+echo &quot;.env&quot; &gt;&gt; .gitignore      # KHÔNG BAO GIỜ commit API key
+code .                         # mở trong VS Code (uv init đã tạo sẵn git repo local)</code></pre>
 <pre><span class="lang">python</span><code># hello.py
 from dotenv import load_dotenv
 import anthropic
@@ -1444,7 +1541,7 @@ except anthropic.APIConnectionError:
 
 <div class="session" id="s5">
 <h3>Session 5: Xây dựng Agent</h3>
-<div class="meta">Tuần 3 · ~4 giờ học + 6–8 giờ đề án · Công cụ: Anthropic SDK, Claude Agent SDK, Docker</div>
+<div class="meta">Tuần 3 · ~4 giờ học + 6–8 giờ đề án · Công cụ: VS Code + Claude Code, Anthropic SDK, Claude Agent SDK, Docker</div>
 <p><strong>Mục tiêu:</strong> hiểu agent hoạt động thế nào, biết khi nào <em>không nên</em> dùng agent, và xây agent đáng tin cậy có đánh giá và rào chắn an toàn.</p>
 <p><strong>Đầu ra:</strong> agent tự động review Pull Request, chạy được trong GitHub Actions.</p><div class="step"><h4><span class="num">Step 1</span> Workflow hay agent?</h4>
 
@@ -1835,13 +1932,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: { name: eval-report, path: eval/report.md }</code></pre>
 
-<p>Script eval trả về exit code khác 0 khi độ chính xác hoặc chi phí vượt ngưỡng, nhờ vậy PR làm giảm chất lượng sẽ bị chặn tự động.</p>
+<p>Script eval trả về exit code khác 0 khi độ chính xác hoặc chi phí vượt ngưỡng, nhờ vậy PR làm giảm chất lượng sẽ bị chặn tự động. Theo tinh thần local-first, hãy chạy eval ở local trước khi push (thêm vào pre-push hook của Session 2, hoặc chạy <code>uv run python eval/run.py</code>); CI chỉ là lớp kiểm tra cuối cùng.</p>
 
 </div>
 <div class="step"><h4><span class="num">Step 5</span> Hệ sinh thái Claude cho công việc hằng ngày</h4>
 
 <table>
   <tr><th>Công cụ</th><th>Dùng khi</th></tr>
+  <tr><td>Claude Code trong VS Code / JetBrains</td><td>Môi trường chính của lộ trình này: làm việc local, duyệt diff ngay trong editor</td></tr>
   <tr><td>Claude Code trên web / mobile (claude.ai/code)</td><td>Giao task chạy trên cloud khi không ngồi máy; nhiều task song song</td></tr>
   <tr><td>Tác vụ định kỳ (scheduled tasks / routines)</td><td>Báo cáo hằng ngày, dọn dependency, kiểm tra link hỏng theo lịch</td></tr>
   <tr><td>Claude in Chrome</td><td>Tự động hoá thao tác trên web app nội bộ, kiểm thử thủ công</td></tr>
@@ -1853,6 +1951,7 @@ jobs:
 <div class="step"><h4><span class="num">Step 6</span> Triển khai cho cả nhóm</h4>
 
 <ul>
+  <li>Quy ước local-first: làm và commit ở local, review bằng <code>/review</code> và pre-push hook, push khi xong một mốc, merge bằng “Squash and merge”.</li>
   <li>Commit cấu hình chung: CLAUDE.md, <code>.claude/</code>, <code>.mcp.json</code>; đóng gói thành plugin để dùng ở nhiều repo.</li>
   <li>Quy ước review: code do AI viết vẫn phải qua review như bình thường; người tạo PR chịu trách nhiệm cuối cùng.</li>
   <li>Quy định dữ liệu: loại dữ liệu nào được phép đưa cho Claude, loại nào không.</li>
@@ -1932,6 +2031,7 @@ jobs:
   <li><strong>Ngữ cảnh là tất cả.</strong> Phần lớn câu trả lời kém đến từ thiếu ngữ cảnh, chứ không phải model yếu.</li>
   <li><strong>Cho Claude cách tự kiểm tra:</strong> test, ảnh chụp kết quả mong muốn, lệnh build.</li>
   <li><strong>Sửa hướng sớm:</strong> thấy đi sai thì Esc, rewind, và đưa chỉ dẫn rõ hơn, đừng cố sửa chồng lên kết quả sai.</li>
+  <li><strong>Local-first:</strong> thử nghiệm bằng checkpoint và rewind, commit ở local, gộp gọn rồi mới push.</li>
   <li><strong>Eval trước, tối ưu sau:</strong> không đo được thì không biết thay đổi là tốt hay xấu.</li>
   <li><strong>Hỏi Claude về chính Claude:</strong> trong Claude Code, cứ hỏi “cấu hình hook thế nào?”, nó sẽ tra tài liệu cho bạn.</li>
   <li><strong>Ghi chép:</strong> sau mỗi session, viết vài dòng “học được gì / prompt nào hiệu quả” lên blog này.</li>
